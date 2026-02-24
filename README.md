@@ -1,50 +1,53 @@
-# Welcome to your Expo app 👋
+# 🛡️ RepQuest: The Legend of Santa Rita
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+> **"It's dangerous to go alone! Take this... and manage your República."**
 
-## Get started
+O **RepQuest** é um sistema de gerenciamento de repúblicas estudantis desenvolvido com uma interface mística baseada na tecnologia **Zonai** de *The Legend of Zelda: Tears of the Kingdom*. O projeto foi criado para transformar tarefas domésticas e despesas em uma verdadeira jornada épica para os estudantes do **INATEL**.
 
-1. Install dependencies
+---
 
+## 📱 O Projeto
+
+Este aplicativo faz parte do ecossistema de estudos e projetos de **Eduardo Bertozzi**, unindo design imersivo (UI/UX) com uma arquitetura de software sólida em **React Native** e **Expo**.
+
+### 🏛️ Funcionalidades Sagradas
+
+* **Mural da Casa (Quests):** Registro de tarefas diárias que recompensam os moradores com Rúpias.
+* **Tesouro da República (Despesas):** Gerenciamento de débitos e tributos (aluguel, luz, internet) com saldo integrado.
+* **Altar de Hyrule (Ranking):** Pódio dinâmico que destaca os heróis mais ativos da república.
+* **Códice do Herói (Perfil):** Registro pessoal de nível, conquistas e link direto para o portfólio no GitHub.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+O desenvolvimento foca em performance e persistência de dados, utilizando ferramentas modernas do ecossistema mobile:
+
+* **React Native & Expo:** Base para desenvolvimento multiplataforma.
+* **TypeScript:** Garantia de tipos e segurança no código.
+* **Context API:** Gerenciamento de estado global (Coração do App) para sincronia entre telas.
+* **AsyncStorage:** Persistência de dados local (Memória Ancestral).
+* **Expo-Font & Audio:** Imersão total com a **HyliaSerif Font** e efeitos sonoros clássicos.
+
+---
+
+## ⚡ Como Rodar o Oráculo
+
+Se você deseja testar este sistema no seu próprio Purah Pad:
+
+1. Clone o repositório:
+   ```bash
+   git clone [https://github.com/EduBertozzi/repquest.git](https://github.com/EduBertozzi/repquest.git)
+   ```
+
+2. Instale as dependências:
    ```bash
    npm install
    ```
 
-2. Start the app
-
-   ```bash
-   npx expo start
+3. Inicie o servidor do Expo:
+    ```bash
+   npm expo start
    ```
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
