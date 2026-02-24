@@ -2,13 +2,13 @@
 
 > **"It's dangerous to go alone! Take this... and manage your República."**
 
-O **RepQuest** é um sistema de gerenciamento de repúblicas estudantis desenvolvido com uma interface mística baseada na tecnologia **Zonai** de *The Legend of Zelda: Tears of the Kingdom*. O projeto foi criado para transformar tarefas domésticas e despesas em uma verdadeira jornada épica para os estudantes do **INATEL**.
+O **RepQuest** é um sistema de gerenciamento de repúblicas estudantis desenvolvido com uma interface mística baseada na tecnologia **Zonai** de *The Legend of Zelda: Tears of the Kingdom*. O projeto foi criado para transformar tarefas domésticas e despesas em uma verdadeira jornada épica para os estudantes do **Inatel**.
 
 ---
 
 ## 📱 O Projeto
 
-Este aplicativo faz parte do ecossistema de estudos e projetos de **Eduardo Bertozzi**, unindo design imersivo (UI/UX) com uma arquitetura de software sólida em **React Native** e **Expo**.
+Este aplicativo faz parte do ecossistema de estudos e projetos de **Eduardo Bertozzi**, e o resto do grupo, unindo design imersivo (UI/UX) com uma arquitetura de software sólida em **React Native** e **Expo**.
 
 ### 🏛️ Funcionalidades Sagradas
 
