@@ -51,6 +51,5 @@ Se você deseja testar este sistema no seu próprio Purah Pad:
    ```bash
    npx expo start
    ```
-   # a
 
 ---
