@@ -37,7 +37,7 @@ Se você deseja testar este sistema no seu próprio Purah Pad:
 
 1. Clone o repositório:
    ```bash
-   git clone [https://github.com/EduBertozzi/repquest.git](https://github.com/EduBertozzi/repquest.git)
+   git clone https://github.com/EduBertozzi/repquest
    ```
 
 2. Instale as dependências:
