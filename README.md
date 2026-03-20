@@ -47,7 +47,7 @@ Se você deseja testar este sistema no seu próprio Purah Pad:
 
 3. Inicie o servidor do Expo:
     ```bash
-   npm expo start
+   npx expo start
    ```
 
 ---
