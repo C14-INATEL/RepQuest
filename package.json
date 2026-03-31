@@ -11,6 +11,7 @@
     "test": "jest",
     "test:watch": "jest --watchAll",
     "test:index": "jest --runTestsByPath __tests__/index.test.tsx",
+    "test:_layout": "jest --runTestsByPath __tests__/_layout.test.tsx",
     "lint": "expo lint"
   },
   "dependencies": {
