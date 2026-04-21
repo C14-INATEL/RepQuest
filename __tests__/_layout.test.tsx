@@ -1,9 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import * as Haptics from 'expo-haptics';
 import React from 'react';
+import { Platform } from 'react-native';
 import Layout from '../app/(tabs)/_layout';
 
-// Mocks para isolar o teste das dependências nativas ("Vibração", Ícones e Roteador)
+// ------------------ Mocks ------------------
+
 jest.mock('expo-haptics', () => ({
   impactAsync: jest.fn(),
   ImpactFeedbackStyle: { Light: 'light' },
@@ -14,12 +16,15 @@ jest.mock('@expo/vector-icons', () => {
   return { FontAwesome5: () => <View testID="mock-icon" /> };
 });
 
+let capturedScreenOptions: Record<string, any> = {};
+
 jest.mock('expo-router', () => {
   const React = require('react');
   const { View } = require('react-native');
   return {
     Tabs: Object.assign(
       ({ screenOptions, children }: any) => {
+        capturedScreenOptions = screenOptions;
         // Simulamos as props que o Expo Router injeta no componente de aba
         const fakeProps = {
           accessibilityState: { selected: true },
@@ -37,6 +42,8 @@ jest.mock('expo-router', () => {
     ),
   };
 });
+
+// ------------------ Testes ------------------
 
 describe('Layout', () => {
   beforeEach(() => {
@@ -74,5 +81,47 @@ describe('Layout', () => {
     
     fireEvent.press(clickTarget);
     expect(clickTarget.props.onPress).toHaveBeenCalled();
+  });
+});
+
+// ------------------ Testes Mobile ------------------
+
+describe('Layout - Mobile Android', () => {
+  beforeEach(() => {
+    capturedScreenOptions = {};
+    jest.clearAllMocks();
+    Object.defineProperty(Platform, 'OS', {
+      get: () => 'android',
+      configurable: true,
+    });
+  });
+
+  it('Deve aplicar altura 70 e paddingBottom 0 no tabBarStyle para Android', () => {
+    render(<Layout />);
+
+    const style = capturedScreenOptions.tabBarStyle;
+    expect(style).toBeDefined();
+    expect(style.height).toBe(70);
+    expect(style.paddingBottom).toBe(0);
+  });
+});
+
+describe('Layout - Mobile iOS', () => {
+  beforeEach(() => {
+    capturedScreenOptions = {};
+    jest.clearAllMocks();
+    Object.defineProperty(Platform, 'OS', {
+      get: () => 'ios',
+      configurable: true,
+    });
+  });
+
+  it('Deve aplicar altura 88 e paddingBottom 28 no tabBarStyle para iOS', () => {
+    render(<Layout />);
+
+    const style = capturedScreenOptions.tabBarStyle;
+    expect(style).toBeDefined();
+    expect(style.height).toBe(88);
+    expect(style.paddingBottom).toBe(28);
   });
 });
