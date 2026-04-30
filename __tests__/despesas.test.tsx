@@ -24,6 +24,17 @@ jest.mock("expo-linear-gradient", () => {
   };
 });
 
+jest.mock("react-native/Libraries/Image/ImageBackground", () => {
+  const React = require("react");
+  const { View } = require("react-native");
+
+  return {
+    __esModule: true,
+    default: ({ children, ...props }: any) =>
+      React.createElement(View, props, children),
+  };
+});
+
 jest.mock("@expo/vector-icons", () => {
   const { Text } = require("react-native");
   const Icon = ({ name }: { name: string }) => <Text>{name}</Text>;
