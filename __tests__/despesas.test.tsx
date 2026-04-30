@@ -185,6 +185,19 @@ describe("DespesasScreen", () => {
     ]);
   });
 
+  it("aciona a animacao de layout antes de pagar uma despesa", async () => {
+    renderScreen();
+
+    await act(async () => {
+      fireEvent.press(screen.getByTestId("pagar-despesa-1"));
+    });
+
+    expect(LayoutAnimation.configureNext).toHaveBeenCalledTimes(1);
+    expect(LayoutAnimation.configureNext).toHaveBeenCalledWith(
+      LayoutAnimation.Presets.easeInEaseOut,
+    );
+  });
+
   it("abre o modal ao clicar no botao flutuante", () => {
     renderScreen();
 
@@ -284,6 +297,35 @@ describe("DespesasScreen", () => {
     ]);
 
     expect(screen.queryByText("Novo Débito")).toBeNull();
+  });
+
+  it("usa Math.random mockado para gerar o id da despesa criada", () => {
+    randomSpy.mockReturnValue(0.123456789);
+
+    const { repState } = renderScreen();
+    randomSpy.mockClear();
+
+    fireEvent.press(screen.getByTestId("fab-add-despesa"));
+    fireEvent.changeText(
+      screen.getByPlaceholderText("DESCRIÇÃO DA DESPESA..."),
+      "Mercado",
+    );
+    fireEvent.changeText(
+      screen.getByPlaceholderText("VALOR EM RÚPIAS..."),
+      "180",
+    );
+
+    fireEvent.press(screen.getByTestId("btn-registrar"));
+
+    expect(randomSpy).toHaveBeenCalledTimes(1);
+    expect(repState.setDespesasGlobal).toHaveBeenCalledWith([
+      expect.objectContaining({
+        id: "4fzzzxjyl",
+        titulo: "Mercado",
+        valor: 180,
+      }),
+      ...repState.despesas,
+    ]);
   });
 
   it("limpa os campos apos adicionar uma nova despesa", () => {

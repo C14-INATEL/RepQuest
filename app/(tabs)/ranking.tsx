@@ -15,19 +15,11 @@ import {
 
 // Importando o coração do app e a memória persistente
 import { useRep } from '../../contexts/RepContext';
+import { OUTROS_MORADORES } from '../../constants/moradores';
 
 const { width } = Dimensions.get('window');
 const ZONAI_CYAN = '#00FFD1';
 const RUPEE_GOLD = '#fcac03';
-
-// Mock de dados dos outros moradores (os rivais de Eduardo)
-const OUTROS_MORADORES = [
-  { id: '2', nome: 'Breno Engenharia', nivel: 3, avatar: 'user-ninja', rupes_base: 1100 },
-  { id: '3', nome: 'Caio Inatel', nivel: 3, avatar: 'user-tie', rupes_base: 950 },
-  { id: '4', nome: 'Gustavo Dev', nivel: 2, avatar: 'user-secret', rupes_base: 800 },
-  { id: '5', nome: 'Morador Fantasma', nivel: 1, avatar: 'user-ghost', rupes_base: 450 },
-  { id: '6', nome: 'Calouro 01', nivel: 1, avatar: 'user-graduate', rupes_base: 200 },
-];
 
 export default function RankingScreen() {
   const { totalRupes, loading } = useRep();
@@ -60,7 +52,7 @@ export default function RankingScreen() {
       </View>
 
       <View style={styles.infoWrapper}>
-        <Text style={[styles.nomeText, fontStyle]}>{item.nome.toUpperCase()}</Text>
+        <Text testID={`list-position-${index + 4}`} style={[styles.nomeText, fontStyle]}>{item.nome.toUpperCase()}</Text>
         <Text style={styles.nivelPequeno}>NÍVEL {item.nivel}</Text>
       </View>
 
@@ -86,7 +78,7 @@ export default function RankingScreen() {
               <View style={[styles.podiumAvatar, { borderColor: '#C0C0C0' }]}>
                 <FontAwesome5 name={top3[1].avatar} size={30} color="#C0C0C0" />
               </View>
-              <Text style={[styles.podiumName, fontStyle]}>{top3[1].nome.split(' ')[0]}</Text>
+              <Text testID="podium-position-2" style={[styles.podiumName, fontStyle]}>{top3[1].nome.split(' ')[0]}</Text>
               <Text style={[styles.podiumRupes, fontStyle]}>{top3[1].rupes.toLocaleString()} R</Text>
               <View style={[styles.basePodium, { height: 40, backgroundColor: 'rgba(192,192,192,0.15)' }]} />
             </View>
@@ -101,7 +93,7 @@ export default function RankingScreen() {
               <View style={[styles.podiumAvatar, styles.firstPlaceAvatar]}>
                 <FontAwesome5 name={top3[0].avatar} size={40} color={RUPEE_GOLD} />
               </View>
-              <Text style={[styles.podiumName, fontStyle, { color: RUPEE_GOLD, fontSize: 18 }]}>{top3[0].nome.split(' ')[0]}</Text>
+              <Text testID="podium-position-1" style={[styles.podiumName, fontStyle, { color: RUPEE_GOLD, fontSize: 18 }]}>{top3[0].nome.split(' ')[0]}</Text>
               <Text style={[styles.podiumRupes, fontStyle, { color: '#fff' }]}>{top3[0].rupes.toLocaleString()} R</Text>
               <View style={[styles.basePodium, { height: 70, backgroundColor: 'rgba(252,172,3,0.2)', borderColor: RUPEE_GOLD }]} />
             </View>
@@ -113,7 +105,7 @@ export default function RankingScreen() {
               <View style={[styles.podiumAvatar, { borderColor: '#CD7F32' }]}>
                 <FontAwesome5 name={top3[2].avatar} size={25} color="#CD7F32" />
               </View>
-              <Text style={[styles.podiumName, fontStyle]}>{top3[2].nome.split(' ')[0]}</Text>
+              <Text testID="podium-position-3" style={[styles.podiumName, fontStyle]}>{top3[2].nome.split(' ')[0]}</Text>
               <Text style={[styles.podiumRupes, fontStyle]}>{top3[2].rupes.toLocaleString()} R</Text>
               <View style={[styles.basePodium, { height: 30, backgroundColor: 'rgba(205,127,50,0.15)' }]} />
             </View>
