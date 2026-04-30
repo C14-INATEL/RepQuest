@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen } from "@testing-library/react-native";
 import React from "react";
-import { ActivityIndicator, LayoutAnimation, TextInput } from "react-native";
+import { LayoutAnimation } from "react-native";
 
 import DespesasScreen from "../app/(tabs)/despesas";
 
@@ -95,10 +95,13 @@ const renderScreen = (overrides: Partial<RepState> = {}) => {
   };
 };
 
+let randomSpy: jest.SpyInstance;
+
 describe("DespesasScreen", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.spyOn(LayoutAnimation, "configureNext").mockImplementation(jest.fn());
+    jest.spyOn(LayoutAnimation, "configureNext").mockImplementation(() => {});
+    randomSpy = jest.spyOn(Math, "random");
   });
 
   afterEach(() => {
@@ -114,11 +117,11 @@ describe("DespesasScreen", () => {
   });
 
   it("exibe um indicador de carregamento enquanto os dados do contexto ainda nao chegaram", () => {
-    const { UNSAFE_getByType, queryByText } = renderScreen({ loading: true });
+    renderScreen({ loading: true });
 
-    expect(UNSAFE_getByType(ActivityIndicator)).toBeTruthy();
-    expect(queryByText("Tesouro da Casa")).toBeNull();
-    expect(queryByText("INVENTÁRIO DE DÉBITOS")).toBeNull();
+    expect(screen.getByText("CARREGANDO TESOURO...")).toBeTruthy();
+    expect(screen.queryByText("Tesouro da Casa")).toBeNull();
+    expect(screen.queryByText("INVENTÁRIO DE DÉBITOS")).toBeNull();
   });
 
   it("renderiza o cabecalho, saldo, total da divida e despesas vindas do contexto global", () => {
@@ -221,8 +224,10 @@ describe("DespesasScreen", () => {
 
     fireEvent.press(screen.getByTestId("fab-add-despesa"));
 
-    const inputs = screen.UNSAFE_getAllByType(TextInput);
-    fireEvent.changeText(inputs[0], "Aluguel");
+    fireEvent.changeText(
+      screen.getByPlaceholderText("DESCRIÇÃO DA DESPESA..."),
+      "Aluguel",
+    );
 
     fireEvent.press(screen.getByTestId("btn-registrar"));
 
@@ -235,8 +240,10 @@ describe("DespesasScreen", () => {
 
     fireEvent.press(screen.getByTestId("fab-add-despesa"));
 
-    const inputs = screen.UNSAFE_getAllByType(TextInput);
-    fireEvent.changeText(inputs[1], "450");
+    fireEvent.changeText(
+      screen.getByPlaceholderText("VALOR EM RÚPIAS..."),
+      "450",
+    );
 
     fireEvent.press(screen.getByTestId("btn-registrar"));
 
@@ -245,7 +252,7 @@ describe("DespesasScreen", () => {
   });
 
   it("cria uma nova despesa ao preencher titulo e valor", () => {
-    jest.spyOn(global.Math, "random").mockReturnValue(0.123456789);
+    randomSpy.mockReturnValue(0.123456789);
 
     const { repState } = renderScreen();
 
@@ -253,9 +260,14 @@ describe("DespesasScreen", () => {
 
     expect(screen.getByText("Novo Débito")).toBeTruthy();
 
-    const inputs = screen.UNSAFE_getAllByType(TextInput);
-    fireEvent.changeText(inputs[0], "Aluguel");
-    fireEvent.changeText(inputs[1], "450");
+    fireEvent.changeText(
+      screen.getByPlaceholderText("DESCRIÇÃO DA DESPESA..."),
+      "Aluguel",
+    );
+    fireEvent.changeText(
+      screen.getByPlaceholderText("VALOR EM RÚPIAS..."),
+      "450",
+    );
 
     fireEvent.press(screen.getByTestId("btn-registrar"));
 
@@ -272,42 +284,51 @@ describe("DespesasScreen", () => {
     ]);
 
     expect(screen.queryByText("Novo Débito")).toBeNull();
-
-    (global.Math.random as jest.Mock).mockRestore();
   });
 
   it("limpa os campos apos adicionar uma nova despesa", () => {
-    jest.spyOn(global.Math, "random").mockReturnValue(0.123456789);
+    randomSpy.mockReturnValue(0.123456789);
 
     renderScreen();
 
     fireEvent.press(screen.getByTestId("fab-add-despesa"));
 
-    let inputs = screen.UNSAFE_getAllByType(TextInput);
-    fireEvent.changeText(inputs[0], "Aluguel");
-    fireEvent.changeText(inputs[1], "450");
+    fireEvent.changeText(
+      screen.getByPlaceholderText("DESCRIÇÃO DA DESPESA..."),
+      "Aluguel",
+    );
+    fireEvent.changeText(
+      screen.getByPlaceholderText("VALOR EM RÚPIAS..."),
+      "450",
+    );
 
     fireEvent.press(screen.getByTestId("btn-registrar"));
 
     fireEvent.press(screen.getByTestId("fab-add-despesa"));
 
-    inputs = screen.UNSAFE_getAllByType(TextInput);
-    expect(inputs[0].props.value).toBe("");
-    expect(inputs[1].props.value).toBe("");
-
-    (global.Math.random as jest.Mock).mockRestore();
+    expect(
+      screen.getByPlaceholderText("DESCRIÇÃO DA DESPESA...").props.value,
+    ).toBe("");
+    expect(
+      screen.getByPlaceholderText("VALOR EM RÚPIAS...").props.value,
+    ).toBe("");
   });
 
   it("adiciona a nova despesa no inicio da lista enviada ao contexto", () => {
-    jest.spyOn(global.Math, "random").mockReturnValue(0.987654321);
+    randomSpy.mockReturnValue(0.987654321);
 
     const { repState } = renderScreen();
 
     fireEvent.press(screen.getByTestId("fab-add-despesa"));
 
-    const inputs = screen.UNSAFE_getAllByType(TextInput);
-    fireEvent.changeText(inputs[0], "Condomínio");
-    fireEvent.changeText(inputs[1], "300");
+    fireEvent.changeText(
+      screen.getByPlaceholderText("DESCRIÇÃO DA DESPESA..."),
+      "Condomínio",
+    );
+    fireEvent.changeText(
+      screen.getByPlaceholderText("VALOR EM RÚPIAS..."),
+      "300",
+    );
 
     fireEvent.press(screen.getByTestId("btn-registrar"));
 
@@ -319,7 +340,5 @@ describe("DespesasScreen", () => {
       categoria: "coins",
       icon: "coins",
     });
-
-    (global.Math.random as jest.Mock).mockRestore();
   });
 });
