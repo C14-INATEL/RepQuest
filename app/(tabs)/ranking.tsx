@@ -33,7 +33,7 @@ export default function RankingScreen() {
   // LÓGICA DE RANKING: Une os dados do Contexto com os mocks e ordena
   const rankingAtualizado = useMemo(() => {
     const listaCompleta = [
-      { id: '1', nome: 'Eduardo Bertozzi', rupes: totalRupes, nivel: 4, avatar: 'user-astronaut' },
+      { id: '1', nome: 'Eduardo Bertozzi', rupes: totalRupes ?? 0 , nivel: 4, avatar: 'user-astronaut' },
       ...OUTROS_MORADORES.map(m => ({ ...m, rupes: m.rupes_base }))
     ];
     // Ordena do maior para o menor saldo
@@ -45,14 +45,14 @@ export default function RankingScreen() {
       styles.rankCard,
       hovered && styles.rankCardHover
     ]}>
-      <Text style={[styles.posicaoText, fontStyle]}>#{index + 1}</Text>
+      <Text style={[styles.posicaoText, fontStyle]}>#{index + 4}</Text>
       
       <View style={styles.avatarPequeno}>
         <FontAwesome5 name={item.avatar} size={16} color={ZONAI_CYAN} />
       </View>
 
       <View style={styles.infoWrapper}>
-        <Text testID={`list-position-${index + 4}`} style={[styles.nomeText, fontStyle]}>{item.nome.toUpperCase()}</Text>
+        <Text testID={`list-position-${index + 4}`} style={[styles.nomeText, fontStyle]}>{item.nome?.toUpperCase() ?? 'DESCONHECIDO'}</Text>
         <Text style={styles.nivelPequeno}>NÍVEL {item.nivel}</Text>
       </View>
 
@@ -78,7 +78,7 @@ export default function RankingScreen() {
               <View style={[styles.podiumAvatar, { borderColor: '#C0C0C0' }]}>
                 <FontAwesome5 name={top3[1].avatar} size={30} color="#C0C0C0" />
               </View>
-              <Text testID="podium-position-2" style={[styles.podiumName, fontStyle]}>{top3[1].nome.split(' ')[0]}</Text>
+              <Text testID="podium-position-2" style={[styles.podiumName, fontStyle]}>{top3[1].nome?.split(' ')[0] ?? 'DESCONHECIDO'}</Text>
               <Text style={[styles.podiumRupes, fontStyle]}>{top3[1].rupes.toLocaleString()} R</Text>
               <View style={[styles.basePodium, { height: 40, backgroundColor: 'rgba(192,192,192,0.15)' }]} />
             </View>
@@ -93,7 +93,7 @@ export default function RankingScreen() {
               <View style={[styles.podiumAvatar, styles.firstPlaceAvatar]}>
                 <FontAwesome5 name={top3[0].avatar} size={40} color={RUPEE_GOLD} />
               </View>
-              <Text testID="podium-position-1" style={[styles.podiumName, fontStyle, { color: RUPEE_GOLD, fontSize: 18 }]}>{top3[0].nome.split(' ')[0]}</Text>
+              <Text testID="podium-position-1" style={[styles.podiumName, fontStyle, { color: RUPEE_GOLD, fontSize: 18 }]}>{top3[0].nome?.split(' ')[0] ?? 'DESCONHECIDO'}</Text>
               <Text style={[styles.podiumRupes, fontStyle, { color: '#fff' }]}>{top3[0].rupes.toLocaleString()} R</Text>
               <View style={[styles.basePodium, { height: 70, backgroundColor: 'rgba(252,172,3,0.2)', borderColor: RUPEE_GOLD }]} />
             </View>
@@ -105,7 +105,7 @@ export default function RankingScreen() {
               <View style={[styles.podiumAvatar, { borderColor: '#CD7F32' }]}>
                 <FontAwesome5 name={top3[2].avatar} size={25} color="#CD7F32" />
               </View>
-              <Text testID="podium-position-3" style={[styles.podiumName, fontStyle]}>{top3[2].nome.split(' ')[0]}</Text>
+              <Text testID="podium-position-3" style={[styles.podiumName, fontStyle]}>{top3[2].nome?.split(' ')[0] ?? 'DESCONHECIDO'}</Text>
               <Text style={[styles.podiumRupes, fontStyle]}>{top3[2].rupes.toLocaleString()} R</Text>
               <View style={[styles.basePodium, { height: 30, backgroundColor: 'rgba(205,127,50,0.15)' }]} />
             </View>
