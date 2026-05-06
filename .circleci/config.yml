@@ -1,0 +1,35 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.2.0
+
+executors:
+  node-executor:
+    docker:
+      - image: cimg/node:20.18
+    working_directory: ~/repquest
+
+jobs:
+  # Responsável: Gabriel
+  install-dependencies:
+    executor: node-executor
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-deps-v1-{{ checksum "package-lock.json" }}
+            - node-deps-v1-
+      - run:
+          name: Instalar dependências
+          command: npm ci
+      - save_cache:
+          key: node-deps-v1-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+
+  # Os demais jobs serão adicionados pelos integrantes via PR
+
+workflows:
+  ci-cd-repquest:
+    jobs:
+      - install-dependencies
