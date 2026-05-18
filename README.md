@@ -93,6 +93,7 @@ O grupo utilizou ferramentas de IA como apoio ao longo do desenvolvimento. O uso
 
 - **Claude (Anthropic)** — via Claude Code (extensão no VS Code)
 - **ChatGPT (OpenAI)** — via interface web
+- **Codex (OpenAI)** — via ChatGPT (extensão do VS Code)
 
 ### Para que foram usados
 
