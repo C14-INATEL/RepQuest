@@ -128,8 +128,6 @@ Resposta aceita com ajuste: a IA sugeriu atualizar os pacotes, mas a atualizaç�
 
 ## Guilherme Almeida
 
-## Guilherme Almeida
-
 **Prompt 1 — Criação de testes com mocks para despesas:**
 > "me ajude a criar um teste em Jest para a tela de despesas usando mocks. O teste deve ficar em `_tests_/despesas.test.tsx` e também ajustar a tela de ranking em `app/(tabs)/ranking.tsx` para suportar o novo comportamento de despesas"
 
