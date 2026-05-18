@@ -105,6 +105,7 @@ O grupo utilizou ferramentas de IA como apoio ao longo do desenvolvimento. O uso
 
 ### Exemplos reais de prompts utilizados
 
+## Gabriel Morass
 **Prompt 1 — Configuração do pipeline:**
 > "vamos fazer um pipeline ci/cd com EXPO EAS Build, sem github actions, com 1 job por integrante"
 
@@ -124,6 +125,25 @@ Resposta ajustada: os testes gerados foram revisados e adaptados para usar os mo
 > "o expo doctor está dando erro de versão nos pacotes expo-linking e expo-web-browser"
 
 Resposta aceita com ajuste: a IA sugeriu atualizar os pacotes, mas a atualização causou conflito de peer dependency com `react@19.1.0`. A solução adotada foi manter as versões anteriores e adicionar `expo.install.exclude` no `package.json`.
+
+## Guilherme Almeida
+
+## Guilherme Almeida
+
+**Prompt 1 — Criação de testes com mocks para despesas:**
+> "me ajude a criar um teste em Jest para a tela de despesas usando mocks. O teste deve ficar em `_tests_/despesas.test.tsx` e também ajustar a tela de ranking em `app/(tabs)/ranking.tsx` para suportar o novo comportamento de despesas"
+
+Resposta aceita com ajustes: foram criados testes utilizando mocks para contexto e dependências da tela de despesas. Também foram feitas adaptações na tela de ranking para compatibilidade com o novo fluxo de despesas. Alguns mocks precisaram ser refinados manualmente para refletir corretamente o comportamento esperado da aplicação.
+
+**Prompt 2 — Cobertura de testes para a tela de missões:**
+> "me instrua a adicionar cobertura de testes Jest para a tela de missões. Preciso que você crie/atualize `_tests_/index.test.tsx`, configure `jest.config.js` e `jest.setup.ts`, e ajuste o `package.json` para rodar o Jest corretamente"
+
+Resposta aceita: foram adicionadas configurações de ambiente para execução dos testes com Jest, incluindo ajustes no `jest.config.js`, `jest.setup.ts` e scripts do `package.json`. Também foi criada cobertura inicial de testes para a tela de missões em `_tests_/index.test.tsx`.
+
+**Prompt 3 — Melhorias na tela principal:**
+> "me ajude a melhorar a tela principal do app no arquivo `app/(tabs)/index.tsx`, adicionando as alterações de interface e comportamento necessárias para a nova versão"
+
+Resposta aceita com ajustes: a IA auxiliou na reorganização da interface e na implementação de melhorias visuais e comportamentais da tela principal. Parte das alterações foi refinada manualmente para manter consistência com o restante da aplicação e adequação ao layout final definido pelo grupo.
 
 ### Dinâmica de uso
 
