@@ -143,6 +143,23 @@ Resposta aceita: foram adicionadas configurações de ambiente para execução d
 
 Resposta aceita com ajustes: a IA auxiliou na reorganização da interface e na implementação de melhorias visuais e comportamentais da tela principal. Parte das alterações foi refinada manualmente para manter consistência com o restante da aplicação e adequação ao layout final definido pelo grupo.
 
+## Eduardo Bertozzi
+
+**Prompt 1 — Estrutura inicial do app:**
+> "Preciso criar a estrutura inicial de um app de gerenciamento de repúblicas estudantis em React Native com Expo. Quais telas e contextos de estado global eu deveria considerar desde o início?"
+
+Resposta aceita com ajustes: a IA sugeriu uma estrutura com Context API para estado global, telas separadas por funcionalidade e AsyncStorage para persistência. A estrutura foi adaptada ao tema Zelda e às necessidades específicas do grupo.
+
+**Prompt 2 — Escolha do CI/CD para Expo:**
+> "Quais são as diferenças entre usar EAS Build com CircleCI e outras alternativas para um projeto Expo React Native? Qual é mais recomendado para um app em estágio de desenvolvimento acadêmico?"
+
+Resposta aceita: a IA explicou as vantagens do EAS Build integrado ao CircleCI — sem necessidade de infraestrutura própria, com suporte nativo ao ecossistema Expo. O grupo adotou essa combinação para o pipeline da NP2.
+
+**Prompt 3 — Boas práticas com Expo Router:**
+> "Estou desenvolvendo um app em React Native com Expo. Quais são as melhores práticas para estruturar a navegação entre telas usando expo-router?"
+
+Resposta aceita com ajustes: a IA sugeriu o uso de layouts aninhados com `_layout.tsx` e navegação por tabs. A estrutura foi aplicada e adaptada ao fluxo de onboarding e às abas principais do RepQuest.
+
 ### Dinâmica de uso
 
 A IA foi usada majoritariamente de forma individual por cada integrante em suas próprias branches, principalmente para geração de testes e resolução de erros pontuais. Em alguns momentos foi usada em conjunto durante reuniões do grupo para decisões de arquitetura e configuração do pipeline.
