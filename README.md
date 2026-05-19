@@ -182,6 +182,6 @@ A IA foi usada majoritariamente de forma individual por cada integrante em suas 
 | Eduardo Bertozzi | [@EduBertozzi](https://github.com/EduBertozzi) |
 | Gabriel Morass | [@gabrielmorass](https://github.com/gabrielmorass) |
 | Guilherme Almeida | [@guialmm](https://github.com/guialmm) |
-| Rafael | — |
-| Daniele | — |
-| Samile | — |
+| Rafael | [@rafaelbrx](https://github.com/rafaelbrx) |
+| Daniele | [@danieleleticia](https://github.com/danieleleticia) |
+| Samile | [@samilebarb](https://github.com/samilebarb) |
