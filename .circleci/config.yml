@@ -53,6 +53,22 @@ jobs:
           name: Verificar tipos TypeScript
           command: npx tsc --noEmit
 
+  # Responsável: Eduardo
+  eas-build-android:
+    executor: node-executor
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-deps-v1-{{ checksum "package-lock.json" }}
+      - run:
+          name: Instalar EAS CLI
+          command: npm install -g eas-cli
+      - run:
+          name: EAS Build — Android Preview (APK)
+          command: eas build --platform android --profile preview --non-interactive
+          environment:
+            EXPO_TOKEN: $EXPO_TOKEN
 
 workflows:
   ci-cd-repquest:
@@ -64,3 +80,7 @@ workflows:
       - type-check:
           requires:
             - install-dependencies
+      - eas-build-android:
+          requires:
+            - lint
+            - type-check
