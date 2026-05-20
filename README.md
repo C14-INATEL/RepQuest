@@ -160,6 +160,17 @@ Resposta aceita: a IA explicou as vantagens do EAS Build integrado ao CircleCI �
 
 Resposta aceita com ajustes: a IA sugeriu o uso de layouts aninhados com `_layout.tsx` e navegação por tabs. A estrutura foi aplicada e adaptada ao fluxo de onboarding e às abas principais do RepQuest.
 
+## Rafael Braga
+**Prompt 1 - Pair Programming testes com mock**
+> "Atue como Engenheiro Sênior especializado em Testes e QA. Você fará pair programming comigo para desenvolver testes utilizando mock para testar as funcionalidades do `_layout.tsx`. Gere uma estrutura genérica para eu entender como implementar exatamente o que preciso testar e depois seguimos com a execução, se der algum erro te envio e você auxilia a corrigir."
+
+Resposta aceita: Não entregou código pronto e realmente atuou como um sênior auxiliando a desenvolver os testes corretamente.
+
+**Prompt 2 - Estrutura e aperfeiçoamento da narrativa**
+> "Preciso adicionar ao README.md histórias de usuário do meu projeto. Estruture uma seção para isso respeitando: Given/When/Then. Se atente ao tema do projeto, gostaria de uma narrativa de fantasia para combinar com a descrição. Adicione a seguinte história de usuário, as outras serão implementadas posteriormente: *Como* usuário do aplicativo, *quero* utilizar uma barra de navegação para transitar entre as páginas principais *para* que eu possa acessar as ferramentas com experiência fluida e feedbacks."
+
+Resposta aceita com ajustes: a IA além da estrutura criou outras histórias de uso genéricas que não eram adequadas ao projeto. 
+
 ### Dinâmica de uso
 
 A IA foi usada majoritariamente de forma individual por cada integrante em suas próprias branches, principalmente para geração de testes e resolução de erros pontuais. Em alguns momentos foi usada em conjunto durante reuniões do grupo para decisões de arquitetura e configuração do pipeline.
@@ -172,6 +183,18 @@ A IA foi usada majoritariamente de forma individual por cada integrante em suas 
 - Lógica de negócio do contexto global (`RepContext`)
 - Fluxo de onboarding e gestão de membros
 - Decisão de quais testes eram relevantes ao domínio
+
+---
+
+## 📖 As Crônicas da República (Histórias de Usuário)
+
+As jornadas de nossos heróis foram mapeadas através das seguintes narrativas e critérios de aceitação:
+
+### 📜 Conto 1: A Navegação Dimensional
+**Como** usuário do aplicativo, **quero** utilizar uma barra de navegação para transitar entre as páginas principais **para** que eu possa acessar as ferramentas com experiência fluida e feedbacks.
+- **Given** (Dado que) o aventureiro está com o aplicativo aberto na interface principal.
+- **When** (Quando) ele toca em um dos ícones sagrados na barra de navegação inferior.
+- **Then** (Então) o sistema exibe a relíquia (página) correspondente com uma transição suave, alterando o estado visual do ícone para indicar a aba ativa.
 
 ---
 
