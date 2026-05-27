@@ -13,7 +13,6 @@ import {
   View
 } from 'react-native';
 
-// Importando o coração do app e a memória persistente
 import { useRep } from '../../contexts/RepContext';
 import { OUTROS_MORADORES } from '../../constants/moradores';
 
@@ -22,7 +21,7 @@ const ZONAI_CYAN = '#00FFD1';
 const RUPEE_GOLD = '#fcac03';
 
 export default function RankingScreen() {
-  const { totalRupes, loading } = useRep();
+  const { totalRupes, nomeUsuario, avatarUsuario, loading } = useRep();
 
   const [fontsLoaded] = useFonts({
     'ZeldaFont': require('../../assets/fonts/HyliaSerif.otf'),
@@ -30,15 +29,13 @@ export default function RankingScreen() {
 
   const fontStyle = fontsLoaded ? { fontFamily: 'ZeldaFont' } : {};
 
-  // LÓGICA DE RANKING: Une os dados do Contexto com os mocks e ordena
   const rankingAtualizado = useMemo(() => {
     const listaCompleta = [
-      { id: '1', nome: 'Eduardo Bertozzi', rupes: totalRupes ?? 0 , nivel: 4, avatar: 'user-astronaut' },
-      ...OUTROS_MORADORES.map(m => ({ ...m, rupes: m.rupes_base }))
+      { id: '1', nome: nomeUsuario, rupes: totalRupes ?? 0, nivel: 4, avatar: avatarUsuario },
+      ...OUTROS_MORADORES.map(m => ({ ...m, rupes: m.rupes_base })),
     ];
-    // Ordena do maior para o menor saldo
     return listaCompleta.sort((a, b) => b.rupes - a.rupes);
-  }, [totalRupes]);
+  }, [totalRupes, nomeUsuario, avatarUsuario]);
 
   const renderMorador = ({ item, index }: { item: any, index: number }) => (
     <Pressable style={({ hovered }: any) => [
