@@ -271,7 +271,7 @@ Não adotamos papéis formais (PO, Scrum Master, QA dedicado). A divisão emergi
 | Guilherme Almeida | Melhorias na tela principal (index.tsx), testes de missões e despesas, job CI `lint` |
 | Rafael Braga | Layout de navegação (HUD/tabs), testes do _layout, job CI `type-check` |
 | Daniele Letícia | Tela de ranking, testes unitários do ranking |
-| Samile Barbosa | Tela de perfil (contribuiu nas fases iniciais do projeto) |
+| Samile Barbosa | Tela de perfil |
 
 ### Ferramentas e Cadência
 
@@ -378,7 +378,7 @@ A tela de missões foi refatorada para separar a lógica de negócio da renderiz
 
 ## 👥 Integrantes
 
-## 👥 Integrantes Ativos
+## 👥 Integrantes
 
 | Nome | GitHub |
 |------|--------|
@@ -387,9 +387,4 @@ A tela de missões foi refatorada para separar a lógica de negócio da renderiz
 | Guilherme Almeida | [@guialmm](https://github.com/guialmm) |
 | Rafael | [@rafaelbrx](https://github.com/rafaelbrx) |
 | Daniele | [@danieleleticia](https://github.com/danieleleticia) |
-
-## 👤 Contribuidor Anterior
-
-| Nome | GitHub | Contribuicao |
-|------|--------|--------------|
-| Samile Barbosa | [@samilebarb](https://github.com/samilebarb) | Tela de Perfil (`app/(tabs)/perfil.tsx`), presente nas fases iniciais do projeto |
+| Samile | [@samilebarb](https://github.com/samilebarb) |
