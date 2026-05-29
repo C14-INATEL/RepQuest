@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react-native';
+import { render, screen, fireEvent } from '@testing-library/react-native';
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Linking } from 'react-native';
 
 import PerfilScreen from '../app/(tabs)/perfil';
 
@@ -92,5 +92,47 @@ describe('PerfilScreen', () => {
     mockUseRep.mockReturnValue(createRepState({ missoes }));
     render(<PerfilScreen />);
     expect(screen.getByText('2')).toBeTruthy();
+  });
+
+  // --- Novos testes (Samile) ---
+
+  it('nao exibe spinner quando loading=false', () => {
+    mockUseRep.mockReturnValue(createRepState({ loading: false }));
+    const { UNSAFE_queryByType } = render(<PerfilScreen />);
+    expect(UNSAFE_queryByType(ActivityIndicator)).toBeNull();
+  });
+
+  it('exibe total de rupes corretamente na tela', () => {
+    mockUseRep.mockReturnValue(createRepState({ totalRupes: 750 }));
+    render(<PerfilScreen />);
+    expect(screen.getByText('750')).toBeTruthy();
+  });
+
+  it('calcula nivel 2 para 500 rupias exatas', () => {
+    // nivelAtual = floor(500 / 500) + 1 = 2
+    mockUseRep.mockReturnValue(createRepState({ totalRupes: 500 }));
+    render(<PerfilScreen />);
+    expect(screen.getByText('NÍVEL 02')).toBeTruthy();
+  });
+
+  it('exibe 0 quests ativas quando missoes esta vazia', () => {
+    mockUseRep.mockReturnValue(createRepState({ missoes: [] }));
+    render(<PerfilScreen />);
+    expect(screen.getByText('0')).toBeTruthy();
+  });
+
+  it('abre link do GitHub ao pressionar o card', () => {
+    const openURLSpy = jest.spyOn(Linking, 'openURL').mockResolvedValue(undefined);
+    mockUseRep.mockReturnValue(createRepState());
+    render(<PerfilScreen />);
+    fireEvent.press(screen.getByText('C14-INATEL/RepQuest'));
+    expect(openURLSpy).toHaveBeenCalledWith('https://github.com/C14-INATEL/RepQuest');
+  });
+
+  it('exibe texto de progresso da runa com valores corretos', () => {
+    // totalRupes=750, xpAtual = 750 % 500 = 250
+    mockUseRep.mockReturnValue(createRepState({ totalRupes: 750 }));
+    render(<PerfilScreen />);
+    expect(screen.getByText('250 / 500 R')).toBeTruthy();
   });
 });
