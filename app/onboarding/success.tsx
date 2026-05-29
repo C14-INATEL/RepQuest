@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import {
-    ImageBackground, // Importado para partilhar o código
+    ImageBackground,
     Platform,
     Pressable,
     Share,
@@ -38,7 +38,7 @@ export default function SuccessScreen() {
         message: `🛡️ RepQuest: O selo da nossa República foi consagrado! \n\nCódigo de Acesso: ${codigoGerado}\n\nBaixe o app e junte-se à jornada!`,
       });
     } catch (error) {
-      console.log("Erro ao partilhar:", error);
+      console.error('Erro ao partilhar:', error);
     }
   };
 
