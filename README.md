@@ -171,6 +171,11 @@ Resposta aceita: Não entregou código pronto e realmente atuou como um sênior 
 
 Resposta aceita com ajustes: a IA além da estrutura criou outras histórias de uso genéricas que não eram adequadas ao projeto. 
 
+**Prompt 3 - Pair Programming branch coverage**
+> "Atue como um Engenheiro de Software Sênior e um Especialista em Testes Automatizados. A partir de agora, nós vamos fazer uma sessão de pair programming. Acabei de receber um feedback do meu time indicando que a branch coverage do meu componente está baixa. Meu objetivo é atingir, se possível, 100% de coverage nesse arquivo: `_layout.tsx`. Encaminharei os testes que já tenho: `_layout.test.tsx` e gere o relatório de coverage atual. A partir do relatório iniciamos a sessão, oriente para os pontos que faltam testes, mas não refatore o código de vez."
+
+Resposta aceita: Não entregou código pronto e realmente atuou como um sênior auxiliando a cobrir ~100% da branch.
+
 ### Dinâmica de uso
 
 A IA foi usada majoritariamente de forma individual por cada integrante em suas próprias branches, principalmente para geração de testes e resolução de erros pontuais. Em alguns momentos foi usada em conjunto durante reuniões do grupo para decisões de arquitetura e configuração do pipeline.
