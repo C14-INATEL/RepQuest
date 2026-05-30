@@ -2,20 +2,21 @@ import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter } from 'expo-router'; // 1. Importação necessária
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
     Alert,
-    Clipboard,
     FlatList,
     ImageBackground,
     Platform,
     Pressable,
+    Share,
     StyleSheet,
     Text,
     TextStyle,
     View
 } from 'react-native';
+import { useRep } from '../../contexts/RepContext';
 
 const ZONAI_CYAN = '#00FFD1';
 const RUPEE_GOLD = '#fcac03';
@@ -29,8 +30,12 @@ const MOCK_MORADORES = [
 ];
 
 export default function GestaoMembros() {
-  const router = useRouter(); // 2. Inicializando o roteador
-  const [moradores, setMoradores] = useState(MOCK_MORADORES);
+  const router = useRouter();
+  const { nomeUsuario, avatarUsuario } = useRep();
+  const [moradores, setMoradores] = useState(() => [
+    { id: '1', nome: nomeUsuario, cargo: 'Fundador', nivel: 4, avatar: avatarUsuario },
+    ...MOCK_MORADORES.slice(1),
+  ]);
   const repoCode = "SABUGAL-2026";
 
   const [fontsLoaded] = useFonts({
@@ -39,10 +44,13 @@ export default function GestaoMembros() {
 
   const fontStyle = (fontsLoaded ? { fontFamily: 'ZeldaFont' } : {}) as TextStyle;
 
-  const copiarCodigo = () => {
-    Clipboard.setString(repoCode);
+  const copiarCodigo = async () => {
     if (Platform.OS !== 'web') Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    Alert.alert("Código Copiado!", "Mande para o novo morador entrar na República.");
+    try {
+      await Share.share({ message: `Código de acesso à República: ${repoCode}` });
+    } catch {
+      Alert.alert('Código de Convite', repoCode);
+    }
   };
 
   const removerMorador = (id: string, nome: string) => {

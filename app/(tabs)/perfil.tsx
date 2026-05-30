@@ -27,7 +27,7 @@ const RUPEE_GOLD = '#fcac03';
 
 export default function PerfilScreen() {
   const router = useRouter();
-  const { totalRupes, missoes, loading } = useRep();
+  const { totalRupes, missoes, nomeUsuario, avatarUsuario, loading } = useRep();
 
   const [fontsLoaded] = useFonts({
     'ZeldaFont': require('../../assets/fonts/HyliaSerif.otf'),
@@ -85,7 +85,7 @@ export default function PerfilScreen() {
               <View style={styles.sheikahRing} />
               <LinearGradient colors={[ZONAI_CYAN, RUPEE_GOLD]} style={styles.avatarGlow}>
                 <View style={styles.avatarInner}>
-                  <FontAwesome5 name="user-astronaut" size={50} color={ZONAI_CYAN} style={styles.avatarIconGlow} />
+                  <FontAwesome5 name={avatarUsuario as any} size={50} color={ZONAI_CYAN} style={styles.avatarIconGlow} />
                 </View>
               </LinearGradient>
               <View style={styles.levelBadge}>
@@ -93,7 +93,7 @@ export default function PerfilScreen() {
               </View>
             </View>
 
-            <Text style={[styles.userName, fontStyle]}>Eduardo Bertozzi</Text>
+            <Text style={[styles.userName, fontStyle]}>{nomeUsuario}</Text>
             
             <View style={styles.locationWrapper}>
               <MaterialCommunityIcons name="map-marker-radius" size={14} color={ZONAI_CYAN} />
@@ -132,8 +132,8 @@ export default function PerfilScreen() {
 
           {/* CÓDICE DO DESENVOLVEDOR */}
           <Text style={[styles.sectionTitle, fontStyle]}>Códice do Desenvolvedor</Text>
-          <Pressable 
-            onPress={() => handleLinkPress('https://github.com/EduBertozzi')}
+          <Pressable
+            onPress={() => handleLinkPress('https://github.com/C14-INATEL/RepQuest')}
             style={({ hovered, pressed }: any) => [
               styles.githubCard,
               (hovered || pressed) && styles.githubCardHover
@@ -143,7 +143,7 @@ export default function PerfilScreen() {
               <FontAwesome5 name="github" size={28} color="#fff" />
             </View>
             <View style={{ flex: 1, marginLeft: 15 }}>
-              <Text style={styles.githubUser}>@EduBertozzi</Text>
+              <Text style={styles.githubUser}>C14-INATEL/RepQuest</Text>
             </View>
             <FontAwesome5 name="chevron-right" size={14} color={ZONAI_CYAN} />
           </Pressable>
