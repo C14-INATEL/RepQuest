@@ -59,7 +59,7 @@ Desenvolvido pelo grupo da disciplina C14: Engenharia de Software do Inatel, uni
 
 ## 🧪 Testes
 
-O projeto utiliza **Jest** com **React Native Testing Library**. São 36 testes unitários cobrindo as telas principais, contexto global e hooks.
+O projeto utiliza **Jest** com **React Native Testing Library**. São mais de 70 testes unitários cobrindo as telas principais, contexto global, hooks e fluxos de navegação.
 
 ```bash
 # Rodar todos os testes
@@ -78,8 +78,8 @@ npm run test:watch
 
 O pipeline é composto por duas ferramentas:
 
-- **CircleCI:** executa lint e verificação de tipos TypeScript a cada push.
-- **EAS Build (Expo Application Services):** compila o APK Android na nuvem do Expo após todas as verificações passarem.
+- **CircleCI:** executa lint, verificacao de tipos TypeScript, auditoria de seguranca e testes unitarios a cada push, com 1 job por integrante.
+- **EAS Build (Expo Application Services):** compila o APK Android na nuvem do Expo apos todas as verificacoes passarem.
 
 Cada integrante é responsável por um job do pipeline, commitado na sua própria branch via Pull Request.
 
@@ -171,6 +171,11 @@ Resposta aceita: Não entregou código pronto e realmente atuou como um sênior 
 
 Resposta aceita com ajustes: a IA além da estrutura criou outras histórias de uso genéricas que não eram adequadas ao projeto. 
 
+**Prompt 3 - Pair Programming branch coverage**
+> "Atue como um Engenheiro de Software Sênior e um Especialista em Testes Automatizados. A partir de agora, nós vamos fazer uma sessão de pair programming. Acabei de receber um feedback do meu time indicando que a branch coverage do meu componente está baixa. Meu objetivo é atingir, se possível, 100% de coverage nesse arquivo: `_layout.tsx`. Encaminharei os testes que já tenho: `_layout.test.tsx` e gere o relatório de coverage atual. A partir do relatório iniciamos a sessão, oriente para os pontos que faltam testes, mas não refatore o código de vez."
+
+Resposta aceita: Não entregou código pronto e realmente atuou como um sênior auxiliando a cobrir ~100% da branch.
+
 ### Dinâmica de uso
 
 A IA foi usada majoritariamente de forma individual por cada integrante em suas próprias branches, principalmente para geração de testes e resolução de erros pontuais. Em alguns momentos foi usada em conjunto durante reuniões do grupo para decisões de arquitetura e configuração do pipeline.
@@ -236,7 +241,7 @@ As jornadas de nossos heróis foram mapeadas através das seguintes narrativas e
 
 ### 📜 Conto 5: A Jornada do Herói (Onboarding)
 **Prioridade:** Alta | **Status:** Entregue (parcial: código de convite exibido, validação real não implementada)
-**Rastreabilidade:** PR #1 (`feat: implementado fluxo de onboarding, gestão de membros e configurações`) -> sem teste automatizado
+**Rastreabilidade:** PR #1 (`feat: implementado fluxo de onboarding, gestão de membros e configurações`) -> fluxo validado manualmente
 
 **Como** novo usuário, **quero** criar uma república ou entrar em uma existente via código de convite **para** que eu possa me integrar ao sistema com o papel correto de administrador ou morador.
 - **Given** (Dado que) o usuário abre o aplicativo pela primeira vez e acessa o fluxo de onboarding.
@@ -247,7 +252,7 @@ As jornadas de nossos heróis foram mapeadas através das seguintes narrativas e
 
 ### 📜 Conto 6: O Códice do Herói (Perfil)
 **Prioridade:** Média | **Status:** Entregue (parcial: perfil exibe dados do contexto global, nome fixo ainda não editável com persistência)
-**Rastreabilidade:** PR #6 (`feat: adiciona tela Perfil`) -> sem teste automatizado
+**Rastreabilidade:** PR #6 (`feat: adiciona tela Perfil`) -> PR #23 e PR #28 -> [`__tests__/perfil.test.tsx`](__tests__/perfil.test.tsx)
 
 **Como** morador, **quero** visualizar meu perfil com nível, rúpias totais e conquistas desbloqueadas **para** que eu acompanhe minha evolução na república e sinta que minhas contribuições são reconhecidas.
 - **Given** (Dado que) o morador acessa a aba "Perfil".
@@ -270,8 +275,8 @@ Não adotamos papéis formais (PO, Scrum Master, QA dedicado). A divisão emergi
 | Gabriel Morass | Estrutura do pipeline CircleCI, testes das telas de despesas e missões, documentação técnica |
 | Guilherme Almeida | Melhorias na tela principal (index.tsx), testes de missões e despesas, job CI `lint` |
 | Rafael Braga | Layout de navegação (HUD/tabs), testes do _layout, job CI `type-check` |
-| Daniele Letícia | Tela de ranking, testes unitários do ranking |
-| Samile Barbosa | Tela de perfil |
+| Daniele Letícia | Tela de ranking, testes unitários do ranking, job CI `run-tests` |
+| Samile Barbosa | Tela de perfil, testes unitários do perfil, job CI `security-audit` |
 
 ### Ferramentas e Cadência
 
@@ -292,11 +297,11 @@ Uma contribuição era considerada pronta quando:
 
 | Métrica | Valor |
 |---|---|
-| Pull Requests mergeados | 20 |
+| Pull Requests mergeados | 28 |
 | Branches ativas | 6 (uma por integrante) |
-| Testes unitários | 36 (6 suites) |
-| Jobs de CI/CD | 4 (lint, type-check, install, eas-build) |
-| Cobertura de statements | 91,6% |
+| Testes unitários | 70+ (10 suites) |
+| Jobs de CI/CD | 5 (install, lint, type-check, security-audit, eas-build) |
+| Cobertura de statements | 88% |
 
 ---
 
@@ -375,8 +380,6 @@ A tela de missões foi refatorada para separar a lógica de negócio da renderiz
 **Motivação:** a versão anterior misturava lógica de UI com lógica de negócio na mesma função. A separação melhora a legibilidade, facilita os testes unitários e torna o `CardDeMissao` reutilizável em outras partes do app.
 
 ---
-
-## 👥 Integrantes
 
 ## 👥 Integrantes
 
