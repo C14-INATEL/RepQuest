@@ -251,13 +251,35 @@ As jornadas de nossos heróis foram mapeadas através das seguintes narrativas e
 ---
 
 ### 📜 Conto 6: O Códice do Herói (Perfil)
-**Prioridade:** Média | **Status:** Entregue (parcial: perfil exibe dados do contexto global, nome fixo ainda não editável com persistência)
-**Rastreabilidade:** PR #6 (`feat: adiciona tela Perfil`) -> PR #23 e PR #28 -> [`__tests__/perfil.test.tsx`](__tests__/perfil.test.tsx)
+**Prioridade:** Média | **Status:** Entregue
+**Rastreabilidade:** PR #6 (`feat: adiciona tela Perfil`) -> PR #22 (`refactor: torna nome e avatar dinamicos`) -> PR #23 e PR #28 -> [`__tests__/perfil.test.tsx`](__tests__/perfil.test.tsx)
 
 **Como** morador, **quero** visualizar meu perfil com nível, rúpias totais e conquistas desbloqueadas **para** que eu acompanhe minha evolução na república e sinta que minhas contribuições são reconhecidas.
 - **Given** (Dado que) o morador acessa a aba "Perfil".
 - **When** (Quando) a tela é carregada.
-- **Then** (Então) o sistema exibe o nível calculado a partir das rúpias acumuladas, a barra de progresso para o próximo nível e os badges desbloqueados conforme o nível atingido.
+- **Then** (Então) o sistema exibe o nome e avatar do usuario carregados do contexto global, o nível calculado a partir das rúpias acumuladas, a barra de progresso para o próximo nível e os badges desbloqueados conforme o nível atingido.
+
+---
+
+### 📜 Conto 7: O Painel do Patriarca (Gestão de Membros)
+**Prioridade:** Média | **Status:** Entregue
+**Rastreabilidade:** PR #1 (`feat: implementado fluxo de onboarding, gestão de membros`) -> PR #24 (`test: adiciona testes unitarios para tela de GestaoMembros`) -> [`__tests__/gestao-membros.test.tsx`](__tests__/gestao-membros.test.tsx)
+
+**Como** administrador da república, **quero** visualizar todos os moradores e remover membros que saíram **para** que a lista esteja sempre atualizada e o código de convite seja controlado.
+- **Given** (Dado que) o administrador acessa o painel de gestão de membros.
+- **When** (Quando) ele pressiona o botão de expulsar ao lado de um morador.
+- **Then** (Então) um alerta de confirmação é exibido e, ao confirmar, o morador é removido da lista imediatamente sem necessidade de recarregar a tela.
+
+---
+
+### 📜 Conto 8: A Forja da Identidade (Editar Perfil)
+**Prioridade:** Média | **Status:** Entregue
+**Rastreabilidade:** PR #22 (`refactor: torna nome e avatar dinamicos`) -> PR #24 (`test: adiciona testes unitarios para tela de EditarPerfil`) -> [`__tests__/editar-perfil.test.tsx`](__tests__/editar-perfil.test.tsx)
+
+**Como** morador, **quero** editar meu nome e avatar **para** que minha identidade na república reflita quem eu sou e seja reconhecida por todos os outros moradores em todas as telas.
+- **Given** (Dado que) o morador acessa a tela de edição de perfil.
+- **When** (Quando) ele altera o nome no campo de texto, seleciona um novo avatar e pressiona "GRAVAR NA PEDRA".
+- **Then** (Então) o nome e o avatar são atualizados no contexto global e persistidos via AsyncStorage, refletindo imediatamente no ranking, no perfil e na gestão de membros.
 
 ---
 
@@ -297,11 +319,12 @@ Uma contribuição era considerada pronta quando:
 
 | Métrica | Valor |
 |---|---|
-| Pull Requests mergeados | 28 |
+| Pull Requests mergeados | 31 |
 | Branches ativas | 6 (uma por integrante) |
-| Testes unitários | 70+ (10 suites) |
-| Jobs de CI/CD | 5 (install, lint, type-check, security-audit, eas-build) |
-| Cobertura de statements | 88% |
+| Testes unitários | 74 (10 suites) |
+| Jobs de CI/CD | 6 (install, lint, type-check, security-audit, run-tests, eas-build) |
+| Cobertura de statements | 91% |
+| Historias de usuario | 8 (com Given/When/Then e rastreabilidade) |
 
 ---
 
@@ -378,6 +401,27 @@ O pipeline foi reestruturado de um job único (`install-dependencies`) para uma 
 A tela de missões foi refatorada para separar a lógica de negócio da renderização, integrar o `CardDeMissao` como componente reutilizável e adicionar `LayoutAnimation` para transições suaves ao completar missões.
 
 **Motivação:** a versão anterior misturava lógica de UI com lógica de negócio na mesma função. A separação melhora a legibilidade, facilita os testes unitários e torna o `CardDeMissao` reutilizável em outras partes do app.
+
+### 6. Migração de identidade do usuário de hardcoded para Context API (Gabriel, PR #22)
+**Commit:** `refactor: torna nome e avatar do usuario dinamicos via RepContext`
+
+O nome `Eduardo Bertozzi` e o avatar `user-astronaut` estavam escritos diretamente no código de quatro telas diferentes: `ranking.tsx`, `perfil.tsx`, `editar-perfil.tsx` e `gestao-membros.tsx`. A refatoração moveu esses dados para o `RepContext`, com persistência via AsyncStorage usando as chaves `@RepQuest:nome` e `@RepQuest:avatar`.
+
+**Motivação:** dados hardcoded tornam o app monousuário e geram inconsistências: alterar o nome em uma tela não refletia nas outras. Com o contexto global, qualquer mudança no perfil propaga automaticamente para todas as telas que consomem `useRep()`.
+
+### 7. Substituição de API depreciada Clipboard por Share (Gabriel, PR #22)
+**Commit:** `refactor: torna nome e avatar do usuario dinamicos via RepContext`
+
+A tela de gestão de membros usava `Clipboard` do `react-native` para copiar o código de convite. Essa API foi removida do React Native na versão 0.81.5 usada pelo projeto. A refatoração substituiu por `Share.share()`, que abre o painel nativo de compartilhamento do sistema operacional.
+
+**Motivação:** além da correção técnica necessária (Clipboard removido causaria erro em runtime), `Share` oferece UX superior: o usuário pode copiar, enviar via WhatsApp, e-mail ou qualquer outro app sem sair do RepQuest.
+
+### 8. Expansão da cobertura de branches do layout de navegação (Rafael, PR #26)
+**Commit:** `test(layout): adiciona novos testes para garantir maior branch coverage`
+
+Os testes do `_layout.tsx` cobriam apenas o caminho principal de renderização. A refatoração dos testes adicionou casos para branches não cobertos: estado de aba ativa vs inativa, plataforma iOS vs Android (altura do tabBar), hover state do TabButton e accessibilityState indefinido.
+
+**Motivação:** branch coverage de 45% significa que metade das decisões condicionais do componente nunca eram exercidas pelos testes. Com a expansão para 100%, qualquer quebra em qualquer condição do layout é detectada automaticamente no CI.
 
 ---
 
