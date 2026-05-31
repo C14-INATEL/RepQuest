@@ -31,8 +31,13 @@ export default function RankingScreen() {
 
   const rankingAtualizado = useMemo(() => {
     const listaCompleta = [
+<<<<<<< HEAD
+      { id: '1', nome: 'Eduardo Bertozzi', rupes: totalRupes ?? 0 , nivel: 4, avatar: 'user-astronaut' },
+      ...OUTROS_MORADORES.map(m => ({ ...m, rupes: m.rupes_base }))
+=======
       { id: '1', nome: nomeUsuario, rupes: totalRupes ?? 0, nivel: 4, avatar: avatarUsuario },
       ...OUTROS_MORADORES.map(m => ({ ...m, rupes: m.rupes_base })),
+>>>>>>> 9542e26a8b4f9ba922356b3ddcf829cf9e10fd57
     ];
     return listaCompleta.sort((a, b) => b.rupes - a.rupes);
   }, [totalRupes, nomeUsuario, avatarUsuario]);
