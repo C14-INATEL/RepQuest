@@ -5,16 +5,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-    Alert,
-    ImageBackground,
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    StyleSheet,
-    Text,
-    TextStyle,
-    View,
-    ViewStyle
+  Alert,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler'; // Melhor para inputs em listas/scrolls
 
@@ -30,7 +30,8 @@ export default function OnboardingSubFlow() {
   const [step, setStep] = useState<'create' | 'join'>('create');
   const [nomeRep, setNomeRep] = useState('');
   const [inviteCode, setInviteCode] = useState('');
-
+  const [nameError, setNameError] = useState(false);
+  
   useEffect(() => {
     if (mode === 'join') setStep('join');
     else setStep('create');
@@ -60,19 +61,25 @@ export default function OnboardingSubFlow() {
   };
 
   const handleAction = () => {
-  if (Platform.OS !== 'web') {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-  }
-  
-  if (step === 'create') {
-    router.push('/onboarding/success?type=admin');
-  } else {
-    router.replace('/(tabs)');
-  }
-};
+    if (step === 'create' && !nomeRep.trim())
+    {
+      setNameError(true);
+      return;
+    }
+
+    if (Platform.OS !== 'web') {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    }
+    
+    if (step === 'create') {
+      router.push('/onboarding/success?type=admin');
+    } else {
+      router.replace('/(tabs)');
+    }
+  };
 
   const currentIcon: IconName = step === 'create' ? 'castle' : 'key-variant';
-
+  
   return (
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
@@ -126,13 +133,29 @@ export default function OnboardingSubFlow() {
               <View style={styles.inputBox}>
                 <Text style={styles.inputLabel}>NOME DA REPÚBLICA</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[
+                    styles.input,
+                    nameError && styles.inputError
+                  ]}
                   placeholder="EX: REPÚBLICA DOS SÁBIOS"
                   placeholderTextColor="rgba(0, 255, 209, 0.2)"
                   value={nomeRep}
-                  onChangeText={setNomeRep}
+                  onChangeText={(text) => {
+                    setNomeRep(text);
+                    setNameError(false);
+                  }}
                   autoCapitalize="characters"
+                  returnKeyType="done"
+                  onSubmitEditing={handleAction}
                 />
+
+                {nameError && (
+                  <Text style={styles.errorText}>
+                    ⚠ Informe o nome da república
+                  </Text>
+                )}
+
+
               </View>
             ) : (
               <View style={styles.inputBox}>
@@ -226,11 +249,23 @@ const styles = StyleSheet.create({
     borderRadius: 4, padding: 18, color: '#fff', fontSize: 16, 
     textAlign: 'center', letterSpacing: 2 
   },
+
+  errorText: {
+  color: '#ff4444',
+  marginTop: 8,
+  textAlign: 'center',
+  fontSize: 12,
+  fontWeight: 'bold',
+  },
+
+  inputError: {
+  borderColor: '#ff4444',
+  borderWidth: 2,
+  },
   
   actionBtn: { borderRadius: 4, overflow: 'hidden' },
   btnActive: { transform: [{ scale: 1.02 }], shadowColor: ZONAI_CYAN, shadowRadius: 15, shadowOpacity: 0.6 },
   btnGradient: { flexDirection: 'row', paddingVertical: 20, justifyContent: 'center', alignItems: 'center' },
   btnText: { color: '#000', fontSize: 14, letterSpacing: 3 },
-  
   switchText: { color: 'rgba(255,255,255,0.3)', fontSize: 10, textAlign: 'center', marginTop: 30, letterSpacing: 1, textDecorationLine: 'underline' }
 });
