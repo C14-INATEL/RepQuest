@@ -37,7 +37,7 @@ export default function CardDeMissao({ titulo, xp, icone = 'scroll', onCompletar
     <Animated.View style={[styles.wrapper, { opacity: fadeAnim }]}>
       <Pressable
         style={({ pressed, hovered }: any) => [
-          { transform: [{ scale: hovered || pressed ? 1.03 : 1 }] }
+          { transform: [{ scale: hovered || pressed ? 1.01 : 1 }] }
         ]}
       >
         {({ hovered, pressed }: any) => (

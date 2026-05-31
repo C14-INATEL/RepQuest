@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
   statBoxHover: { borderColor: ZONAI_CYAN, backgroundColor: 'rgba(0, 255, 209, 0.08)' },
   statValue: { color: '#fff', fontSize: 28, marginBottom: 5 },
   statLabel: { color: RUPEE_GOLD, fontSize: 10, letterSpacing: 2 },
-  boxIcon: { position: 'absolute', top: -10, right: -10, opacity: 0.1, transform: [{ scale: 2 }] },
+  boxIcon: { position: 'absolute', top: -10, right: -10, opacity: 0.1, transform: [{ scale: 1.01 }] },
   sectionTitle: { color: '#fff', fontSize: 13, textAlign: 'center', marginBottom: 20, letterSpacing: 4, textTransform: 'uppercase', opacity: 0.8 },
   githubCard: { flexDirection: 'row', alignItems: 'center', padding: 20, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)', borderRadius: 4, backgroundColor: 'rgba(255,255,255,0.03)' },
   githubCardHover: { borderColor: ZONAI_CYAN, backgroundColor: 'rgba(0, 255, 209, 0.05)' },

@@ -24,7 +24,7 @@ const TabButton = (props: any) => {
       style={({ hovered }: any) => [
         styles.tabButton,
         hovered && { backgroundColor: 'rgba(0, 255, 209, 0.05)' },
-        { transform: [{ scale: hovered ? 1.1 : 1 }] }
+        { transform: [{ scale: hovered ? 1.01 : 1 }] }
       ]}
     >
       {/* Indicador de "Runa Ativa" */}

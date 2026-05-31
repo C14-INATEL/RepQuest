@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
   itemCardHover: {
     borderColor: ZONAI_CYAN,
     backgroundColor: "rgba(0, 255, 209, 0.05)",
-    transform: [{ scale: 1.02 }],
+    transform: [{ scale: 1.01 }],
   },
   iconCircle: {
     width: 40,
