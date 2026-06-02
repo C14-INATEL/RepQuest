@@ -1,19 +1,18 @@
+import { useRep } from '../contexts/RepContext';
 import { Redirect } from 'expo-router';
-import { useRep } from '../contexts/RepContext'; // Ajuste o caminho se necessário
+import { ActivityIndicator, View } from 'react-native';
 
 export default function IndexGatekeeper() {
-  const { totalRupes } = useRep();
+  const { nomeUsuario, loading } = useRep();
 
-  // LÓGICA TEMPORÁRIA: 
-  // Se o usuário não tem rúpias (ou seja, nunca usou o app), 
-  // mandamos para o Role Select.
-  // Caso contrário, ele já é um morador e vai direto para o Feed (tabs).
-  
-  const hasRepublic = false; // Aqui você trocará por uma lógica real de banco depois
+  if (loading) return (
+    <View style={{ flex: 1, backgroundColor: '#000', justifyContent: 'center', alignItems: 'center' }}>
+      <ActivityIndicator color="#00FFD1" size="large" />
+    </View>
+  );
 
-  if (!hasRepublic) {
-    return <Redirect href="/onboarding/role-select" />;
-  }
+  // Se o nome ainda é o padrão, o usuário nunca passou pelo onboarding
+  const hasOnboarded = nomeUsuario !== 'Aventureiro';
 
-  return <Redirect href="/(tabs)" />;
+  return <Redirect href={hasOnboarded ? '/(tabs)' : '/onboarding/role-select'} />;
 }
