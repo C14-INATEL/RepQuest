@@ -1,89 +1,98 @@
 /**
- * Testes Unitários - AppContext (contexts/)
+ * Testes Unitarios - Contexto Global da Aplicacao (contexts/RepContext.tsx)
  *
- * Cenário: persistência de dados via AsyncStorage
- * Mock utilizado: @react-native-async-storage/async-storage
+ * Foco: PERSISTENCIA. Garante que as alteracoes de estado feitas pelo
+ * contexto global do app sao gravadas no AsyncStorage com as chaves e
+ * formatos corretos, e que os valores padrao sao carregados quando o
+ * armazenamento esta vazio.
+ *
+ * Observacao: o contexto global do RepQuest e o RepProvider/useRep.
  */
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { act, renderHook } from '@testing-library/react-native';
+import React from 'react';
 
-// ─── Mock do AsyncStorage ─────────────────────────────────────────────────
-jest.mock("@react-native-async-storage/async-storage", () => ({
-  setItem: jest.fn(),
-  getItem: jest.fn(),
-  removeItem: jest.fn(),
+import { RepProvider, useRep } from '../contexts/RepContext';
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  setItem: jest.fn(() => Promise.resolve()),
+  getItem: jest.fn(() => Promise.resolve(null)),
 }));
 
-// ─── Tipos do projeto ─────────────────────────────────────────────────────
-interface Member {
-  id: string;
-  name: string;
-  rupees: number;
-  level: number;
-  githubUrl: string;
-}
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+  <RepProvider>{children}</RepProvider>
+);
 
-interface Quest {
-  id: string;
-  title: string;
-  reward: number;
-  completed: boolean;
-  assignedTo: string | null;
-}
-
-// ─── Funções do contexto (espelham contexts/AppContext.tsx) ───────────────
-const MEMBERS_KEY = "@repquest:members";
-const QUESTS_KEY = "@repquest:quests";
-
-async function persistMembers(members: Member[]): Promise<void> {
-  await AsyncStorage.setItem(MEMBERS_KEY, JSON.stringify(members));
-}
-
-async function loadQuests(): Promise<Quest[]> {
-  const raw = await AsyncStorage.getItem(QUESTS_KEY);
-  return raw ? (JSON.parse(raw) as Quest[]) : [];
-}
-
-// ─── Testes ───────────────────────────────────────────────────────────────
-describe("AppContext – persistência com AsyncStorage", () => {
+describe('RepContext – persistencia no AsyncStorage', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
   });
 
-  it("deve salvar membros no AsyncStorage com a chave e formato corretos", async () => {
-    const members: Member[] = [
-      {
-        id: "m1",
-        name: "Link",
-        rupees: 120,
-        level: 4,
-        githubUrl: "https://github.com/link",
-      },
-      {
-        id: "m2",
-        name: "Zelda",
-        rupees: 200,
-        level: 6,
-        githubUrl: "https://github.com/zelda",
-      },
+  it('persiste o saldo inicial de rupias com a chave correta apos carregar', async () => {
+    const { result } = renderHook(() => useRep(), { wrapper });
+    await act(async () => {});
+
+    expect(result.current.loading).toBe(false);
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith('@RepQuest:rupes', '1250');
+  });
+
+  it('persiste o nome do usuario como string quando alterado', async () => {
+    const { result } = renderHook(() => useRep(), { wrapper });
+    await act(async () => {});
+
+    await act(async () => {
+      result.current.setNomeUsuario('Link');
+    });
+
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith('@RepQuest:nome', 'Link');
+  });
+
+  it('persiste a lista de missoes serializada em JSON', async () => {
+    const { result } = renderHook(() => useRep(), { wrapper });
+    await act(async () => {});
+
+    const novasMissoes = [
+      { id: '99', titulo: 'Domar o Lynel da baguncha', xp: 80, icone: 'broom' },
     ];
 
-    await persistMembers(members);
+    await act(async () => {
+      result.current.setMissoesGlobal(novasMissoes);
+    });
 
-    expect(AsyncStorage.setItem).toHaveBeenCalledTimes(1);
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-      MEMBERS_KEY,
-      JSON.stringify(members),
+      '@RepQuest:missoes',
+      JSON.stringify(novasMissoes),
     );
   });
 
-  it("deve retornar array vazio quando não houver quests salvas no AsyncStorage", async () => {
-    (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(null);
+  it('persiste a lista de despesas serializada em JSON', async () => {
+    const { result } = renderHook(() => useRep(), { wrapper });
+    await act(async () => {});
 
-    const result = await loadQuests();
+    const novasDespesas = [
+      { id: '7', titulo: 'Tributo da Internet', valor: 100, categoria: 'casa', icon: 'wifi' },
+    ];
 
-    expect(AsyncStorage.getItem).toHaveBeenCalledWith(QUESTS_KEY);
-    expect(result).toEqual([]);
-    expect(result).toHaveLength(0);
+    await act(async () => {
+      result.current.setDespesasGlobal(novasDespesas);
+    });
+
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      '@RepQuest:despesas',
+      JSON.stringify(novasDespesas),
+    );
+  });
+
+  it('carrega missoes e despesas padrao quando o AsyncStorage esta vazio', async () => {
+    const { result } = renderHook(() => useRep(), { wrapper });
+    await act(async () => {});
+
+    // Defaults definidos no proprio RepContext
+    expect(result.current.missoes).toHaveLength(2);
+    expect(result.current.despesas).toHaveLength(1);
+    expect(result.current.missoes[0].xp).toBe(50);
+    expect(result.current.missoes[0].icone).toBe('sink');
   });
 });
