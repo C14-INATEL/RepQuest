@@ -95,14 +95,6 @@ O grupo utilizou ferramentas de IA como apoio ao longo do desenvolvimento. O uso
 - **ChatGPT (OpenAI):** via interface web
 - **Codex (OpenAI):** via ChatGPT (extensão do VS Code)
 
-### Para que foram usados
-
-- Geração de testes unitários com mocks para React Native
-- Configuração do pipeline CircleCI + EAS Build
-- Debugging de erros de configuração (ESLint, TypeScript, dependências Expo)
-- Refatoração de componentes e hooks
-- Revisão de código e sugestões de melhoria
-
 ### Exemplos reais de prompts utilizados
 
 ## Gabriel Morass
@@ -175,10 +167,6 @@ Resposta aceita com ajustes: a IA além da estrutura criou outras histórias de 
 > "Atue como um Engenheiro de Software Sênior e um Especialista em Testes Automatizados. A partir de agora, nós vamos fazer uma sessão de pair programming. Acabei de receber um feedback do meu time indicando que a branch coverage do meu componente está baixa. Meu objetivo é atingir, se possível, 100% de coverage nesse arquivo: `_layout.tsx`. Encaminharei os testes que já tenho: `_layout.test.tsx` e gere o relatório de coverage atual. A partir do relatório iniciamos a sessão, oriente para os pontos que faltam testes, mas não refatore o código de vez."
 
 Resposta aceita: Não entregou código pronto e realmente atuou como um sênior auxiliando a cobrir ~100% da branch.
-
-### Dinâmica de uso
-
-A IA foi usada majoritariamente de forma individual por cada integrante em suas próprias branches, principalmente para geração de testes e resolução de erros pontuais. Em alguns momentos foi usada em conjunto durante reuniões do grupo para decisões de arquitetura e configuração do pipeline.
 
 ### O que não foi feito por IA
 
@@ -287,79 +275,88 @@ As jornadas de nossos heróis foram mapeadas através das seguintes narrativas e
 
 O grupo adotou uma abordagem **Kanban informal**, sem sprints fixos ou cerimônias de Scrum. A escolha foi motivada pela natureza assíncrona do trabalho acadêmico: cada integrante contribuía conforme sua disponibilidade, e o progresso era contínuo em vez de dividido em iterações fechadas.
 
-### Papéis e Responsabilidades
+### Kanban na Pratica
 
-Não adotamos papéis formais (PO, Scrum Master, QA dedicado). A divisão emergiu organicamente conforme as habilidades e afinidades de cada membro:
+O GitHub funcionou como nosso quadro Kanban. Cada Pull Request representava uma tarefa passando pelos estados:
 
-| Integrante | Contribuição principal |
+```
+Em desenvolvimento (branch pessoal)  -->  Em revisao (PR aberto)  -->  Concluido (mergeado no main)
+```
+
+### Papeis e Responsabilidades
+
+Nao adotamos papeis formais (PO, Scrum Master, QA dedicado). A divisao emergiu organicamente conforme as habilidades e afinidades de cada membro:
+
+| Integrante | Contribuicao principal |
 |---|---|
-| Eduardo Bertozzi | Idealizador do projeto, arquitetura (Context API, AsyncStorage), telas de onboarding e gestão de membros, job CI `eas-build-android` |
-| Gabriel Morass | Estrutura do pipeline CircleCI, testes das telas de despesas e missões, documentação técnica |
-| Guilherme Almeida | Melhorias na tela principal (index.tsx), testes de missões e despesas, job CI `lint` |
-| Rafael Braga | Layout de navegação (HUD/tabs), testes do _layout, job CI `type-check` |
-| Daniele Letícia | Tela de ranking, testes unitários do ranking, job CI `run-tests` |
-| Samile Barbosa | Tela de perfil, testes unitários do perfil, job CI `security-audit` |
+| Eduardo Bertozzi | Idealizador do projeto, arquitetura (Context API, AsyncStorage), telas de onboarding e gestao de membros, job CI `eas-build-android` |
+| Gabriel Morass | Estrutura do pipeline CircleCI, testes de 6 telas, refactoring do RepContext, documentacao tecnica |
+| Guilherme Almeida | Melhorias na tela principal (index.tsx), testes de missoes e despesas, job CI `lint` |
+| Rafael Braga | Layout de navegacao (HUD/tabs), testes do _layout com 100% de cobertura, job CI `type-check` |
+| Daniele Leticia | Tela de ranking, testes unitarios do ranking, job CI `run-tests` |
+| Samile Barbosa | Tela de perfil, testes unitarios do perfil, job CI `security-audit` |
 
-### Ferramentas e Cadência
+### Tomada de Decisao
 
-- **Comunicação:** WhatsApp para decisões rápidas e alinhamentos entre os membros.
-- **Versionamento:** GitHub com uma branch por integrante e PRs obrigatórios para merge no main.
+As decisoes tecnicas centrais foram discutidas em grupo via WhatsApp. Exemplos:
+
+- **Context API vs Redux:** Redux foi descartado por exigir boilerplate desproporcional para a complexidade do estado do app. Context API nativa resolve sem dependencia extra. Decisao tomada pelo Eduardo na estrutura inicial do projeto.
+- **CircleCI vs GitHub Actions:** GitHub Actions foi descartado por ser proibido pelo enunciado. CircleCI foi escolhido por nao exigir servidor proprio e ter suporte nativo ao Expo. Decisao tomada pelo Gabriel ao configurar o pipeline.
+- **AsyncStorage vs SQLite:** os dados do app sao simples (numeros e arrays JSON). SQLite seria desproporcional para esse volume e estrutura. AsyncStorage resolve com uma API mais simples e sem configuracao nativa adicional.
+
+### Ferramentas e Cadencia
+
+- **Comunicacao:** WhatsApp para decisoes rapidas e alinhamentos entre os membros.
+- **Versionamento:** GitHub com uma branch por integrante e PRs obrigatorios para merge no main.
 - **CI/CD:** CircleCI com 1 job por integrante, adicionados incrementalmente via Pull Request.
-- **Revisão de código:** Pull Requests com ao menos 1 aprovação antes do merge.
+- **Revisao de codigo:** Pull Requests com ao menos 1 aprovacao antes do merge.
 
-### Definição de Pronto (DoD)
+### Definicao de Pronto (DoD)
 
-Uma contribuição era considerada pronta quando:
-1. O código estava commitado na branch do integrante com mensagem descritiva.
+Uma contribuicao era considerada pronta quando:
+1. O codigo estava commitado na branch do integrante com mensagem descritiva.
 2. Um Pull Request foi aberto para a branch `main`.
-3. Os testes passavam localmente (quando aplicável ao tipo de contribuição).
+3. Os testes passavam localmente (quando aplicavel ao tipo de contribuicao).
 4. Ao menos um outro membro revisou o PR antes do merge.
 
-### Métricas do Projeto
+Na pratica, o criterio de testes foi aplicado rigorosamente para commits de codigo. Commits de documentacao e CI foram revisados semanticamente, sem exigir execucao de testes.
 
-| Métrica | Valor |
+### Metricas do Projeto
+
+| Metrica | Valor |
 |---|---|
-| Pull Requests mergeados | 31 |
+| Pull Requests mergeados | 32 |
 | Branches ativas | 6 (uma por integrante) |
-| Testes unitários | 74 (10 suites) |
+| Testes unitarios | 74 (10 suites) |
 | Jobs de CI/CD | 6 (install, lint, type-check, security-audit, run-tests, eas-build) |
 | Cobertura de statements | 91% |
 | Historias de usuario | 8 (com Given/When/Then e rastreabilidade) |
+| Commits no main | 95+ |
 
 ---
 
 ## 🔄 Dinâmica de Desenvolvimento
 
-### Como as tarefas foram divididas
-
-Cada integrante assumiu espontaneamente a responsabilidade por uma ou mais partes do aplicativo. As decisões técnicas centrais, como a escolha do Context API sobre Redux, o uso do Expo Router em vez de React Navigation manual e a adoção do CircleCI no lugar do GitHub Actions (proibido pelo enunciado), foram discutidas em grupo via WhatsApp.
-
-### Fluxo de branches e commits
-
-Adotamos um fluxo simples e direto:
-
-```
-branch pessoal -> commit -> Pull Request -> revisão -> merge no main
-```
-
-- Cada integrante trabalhava exclusivamente em sua branch (nomeada com seu apelido).
-- Alguns membros seguiram Conventional Commits (`feat:`, `test:`, `ci:`, `docs:`); outros usaram mensagens livres.
-- PRs eram abertos para cada contribuição significativa, garantindo rastreabilidade.
-
 ### Principal desafio
 
-O maior bloqueio foi **sincronizar o trabalho de 6 pessoas com disponibilidades diferentes**. Sem sprints com datas fixas, algumas entregas aguardavam enquanto outras estavam prontas há dias. Um exemplo concreto: o `RepContext` (estado global do app) foi criado pelo Eduardo antes de estar totalmente documentado, o que dificultou o trabalho inicial dos demais membros para consumir o contexto em seus próprios componentes e testes.
+O maior bloqueio foi sincronizar o trabalho de 6 pessoas com disponibilidades diferentes. Sem sprints com datas fixas, algumas entregas aguardavam enquanto outras estavam prontas há dias. Um exemplo concreto: o `RepContext` foi criado pelo Eduardo antes de estar documentado, o que dificultou os outros membros para consumir o contexto em seus componentes e testes. Cada um teve que descobrir a API do contexto lendo o código.
 
 ### Conflitos e resolução
 
-Tivemos conflitos de merge quando membros modificaram áreas próximas do código simultaneamente. O commit `chore: resolve merge conflict in README.md` (PR #16) registra um desses casos, resolvido manualmente preservando as contribuições de ambos os lados.
+Tivemos dois conflitos de merge significativos ao longo do projeto:
+
+**Conflito 1 (PR #16):** Dois membros modificaram o README simultaneamente em branches separadas. Resolvido manualmente preservando as contribuições dos dois lados.
+
+**Conflito 2 (PR #31):** A branch da Daniele tinha a versão antiga do `ranking.tsx` com nome hardcoded (`Eduardo Bertozzi`), enquanto o main já tinha o refactoring com `nomeUsuario` dinâmico do PR #22. O conflito gerou marcadores `<<<<<<< HEAD` no arquivo que quebraram os testes com `SyntaxError`. Resolvido mantendo a versão dinâmica e descartando o nome fixo.
+
+A lição prática: atualizar a branch com o main (`git pull origin main`) antes de abrir qualquer PR teria evitado o segundo conflito.
 
 ### Lições aprendidas
 
-- **Definir um backlog antes de começar:** a divisão emergencial funcionou, mas um backlog formal desde o início teria evitado sobreposições e retrabalho.
-- **Padronizar commits desde o dia 1:** a mistura de estilos de mensagem dificulta a leitura do histórico e a geração automática de changelogs.
-- **Criar o job de CI para testes antes de escrever os testes:** os testes foram escritos sem feedback automático do CI, o que atrasou a identificação de problemas de ambiente.
 - **Documentar o estado global logo no início:** o `RepContext` era a peça central do app, mas a falta de documentação inicial gerou retrabalho para os membros que o consumiram depois.
+- **Criar o job de CI para testes antes de escrever os testes:** os testes existiam localmente por semanas antes de rodarem automaticamente no CI. Problemas de ambiente foram identificados com atraso.
+- **Padronizar commits desde o dia 1:** a mistura de estilos de mensagem (`feat:` vs mensagens livres) dificulta a leitura do histórico.
+- **Atualizar a branch com o main antes de abrir PR:** o conflito do `ranking.tsx` teria sido evitado com um `git pull` antes do PR.
 
 ---
 
