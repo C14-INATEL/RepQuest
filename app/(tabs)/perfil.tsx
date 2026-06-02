@@ -169,7 +169,7 @@ export default function PerfilScreen() {
           <Text style={[styles.sectionTitle, fontStyle, { marginTop: 10 }]}>Sintonizar Purah Pad</Text>
           <View style={styles.settingsGroup}>
             <Pressable 
-              onPress={() => router.push('/config')}
+              onPress={() => router.push('/config/editar-perfil')}
               style={({ hovered }: any) => [styles.settingsItem, hovered && styles.settingsItemHover]}
             >
               <View style={styles.settingsLeft}>
