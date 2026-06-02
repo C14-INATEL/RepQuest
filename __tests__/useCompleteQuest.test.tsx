@@ -1,84 +1,93 @@
 /**
- * Testes Unitários - useCompleteQuest (hooks/)
+ * Testes Unitarios - Fluxo de recompensa de missoes (contexts/RepContext.tsx)
  *
- * Cenário: hook de conclusão de quest com atribuição de recompensa
- * Mock utilizado: callbacks de atualização de estado (updateQuest / updateMember)
+ * Foco: ECONOMIA DE RUPIAS. No RepQuest, concluir uma missao credita Rupias
+ * ao morador (ganharRupes) e quitar uma despesa debita do saldo (gastarRupes).
+ * Estes testes exercitam essa logica real de recompensa e o gerenciamento
+ * do mural de missoes atraves do contexto global (useRep).
  */
 
-// ─── Tipos do projeto ─────────────────────────────────────────────────────
-interface Quest {
-  id: string;
-  title: string;
-  reward: number;
-  completed: boolean;
-  assignedTo: string | null;
-}
+import { act, renderHook } from '@testing-library/react-native';
+import React from 'react';
 
-interface Member {
-  id: string;
-  name: string;
-  rupees: number;
-  level: number;
-}
+import { RepProvider, useRep } from '../contexts/RepContext';
 
-// ─── Lógica do hook (espelha hooks/useCompleteQuest.ts) ───────────────────
-function completeQuest(
-  quest: Quest,
-  member: Member,
-  updateQuest: (q: Quest) => void,
-  updateMember: (m: Member) => void,
-): void {
-  if (quest.completed) {
-    throw new Error("Quest já concluída.");
-  }
-  if (quest.assignedTo !== member.name) {
-    throw new Error("Este herói não é responsável pela quest.");
-  }
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  setItem: jest.fn(() => Promise.resolve()),
+  getItem: jest.fn(() => Promise.resolve(null)),
+}));
 
-  updateQuest({ ...quest, completed: true });
-  updateMember({ ...member, rupees: member.rupees + quest.reward });
-}
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+  <RepProvider>{children}</RepProvider>
+);
 
-// ─── Testes ───────────────────────────────────────────────────────────────
-describe("useCompleteQuest – regras de negócio", () => {
-  const mockUpdateQuest = jest.fn();
-  const mockUpdateMember = jest.fn();
-
+describe('RepContext – recompensa de missoes e mural', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it("deve concluir a quest e creditar Rúpias ao membro responsável", () => {
-    const quest: Quest = {
-      id: "q1",
-      title: "Lavar a louça",
-      reward: 25,
-      completed: false,
-      assignedTo: "Link",
-    };
-    const member: Member = { id: "m1", name: "Link", rupees: 50, level: 2 };
+  it('credita Rupias ao concluir uma missao (ganharRupes)', async () => {
+    const { result } = renderHook(() => useRep(), { wrapper });
+    await act(async () => {});
 
-    completeQuest(quest, member, mockUpdateQuest, mockUpdateMember);
+    // Saldo inicial: 1250. Missao de 50 XP concluida.
+    act(() => {
+      result.current.ganharRupes(50);
+    });
 
-    expect(mockUpdateQuest).toHaveBeenCalledWith({ ...quest, completed: true });
-    expect(mockUpdateMember).toHaveBeenCalledWith({ ...member, rupees: 75 });
+    expect(result.current.totalRupes).toBe(1300);
   });
 
-  it("deve lançar erro e não atualizar estado se a quest já foi concluída", () => {
-    const quest: Quest = {
-      id: "q2",
-      title: "Varrer a sala",
-      reward: 15,
-      completed: true,
-      assignedTo: "Zelda",
-    };
-    const member: Member = { id: "m2", name: "Zelda", rupees: 100, level: 3 };
+  it('acumula recompensas de varias missoes concluidas em sequencia', async () => {
+    const { result } = renderHook(() => useRep(), { wrapper });
+    await act(async () => {});
 
-    expect(() =>
-      completeQuest(quest, member, mockUpdateQuest, mockUpdateMember),
-    ).toThrow("Quest já concluída.");
+    act(() => {
+      result.current.ganharRupes(50);
+      result.current.ganharRupes(20);
+    });
 
-    expect(mockUpdateQuest).not.toHaveBeenCalled();
-    expect(mockUpdateMember).not.toHaveBeenCalled();
+    expect(result.current.totalRupes).toBe(1320);
+  });
+
+  it('debita o saldo ao quitar uma despesa (gastarRupes)', async () => {
+    const { result } = renderHook(() => useRep(), { wrapper });
+    await act(async () => {});
+
+    // Ganha 100 e paga um tributo de 1200.
+    act(() => {
+      result.current.ganharRupes(100);
+      result.current.gastarRupes(1200);
+    });
+
+    expect(result.current.totalRupes).toBe(150);
+  });
+
+  it('nao altera o saldo quando a recompensa concluida vale 0 XP', async () => {
+    const { result } = renderHook(() => useRep(), { wrapper });
+    await act(async () => {});
+
+    act(() => {
+      result.current.ganharRupes(0);
+    });
+
+    expect(result.current.totalRupes).toBe(1250);
+  });
+
+  it('remove uma missao do mural ao atualizar a lista global', async () => {
+    const { result } = renderHook(() => useRep(), { wrapper });
+    await act(async () => {});
+
+    // Comeca com as 2 missoes padrao; conclui/remove uma e resta 1.
+    expect(result.current.missoes).toHaveLength(2);
+
+    const restante = result.current.missoes.filter((m) => m.id !== '1');
+
+    act(() => {
+      result.current.setMissoesGlobal(restante);
+    });
+
+    expect(result.current.missoes).toHaveLength(1);
+    expect(result.current.missoes[0].id).toBe('2');
   });
 });
