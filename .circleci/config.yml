@@ -78,9 +78,7 @@ jobs:
           command: sudo npm install -g eas-cli
       - run:
           name: EAS Build — Android Preview (APK)
-          command: eas build --platform android --profile preview --non-interactive || true
-          environment:
-            EXPO_TOKEN: $EXPO_TOKEN
+          command: eas build --platform android --profile preview --non-interactive --no-wait
 
   # Responsável: Daniele
   run-tests:
