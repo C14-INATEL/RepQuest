@@ -95,7 +95,7 @@ export default function RoleSelectScreen() {
             {/* OPÇÃO: ADMIN (FUNDADOR) */}
             <Pressable 
               onPress={() => handleChoice('admin')}
-              style={({ hovered, pressed }) => [
+              style={({ hovered, pressed }: any) => [
                 styles.roleCard,
                 hovered ? styles.cardHover : null,
                 pressed ? styles.cardPressed : null
@@ -118,7 +118,7 @@ export default function RoleSelectScreen() {
             {/* OPÇÃO: MEMBRO (GUERREIRO) */}
             <Pressable 
               onPress={() => handleChoice('membro')}
-              style={({ hovered, pressed }) => [
+              style={({ hovered, pressed }: any) => [
                 styles.roleCard,
                 hovered ? styles.cardHover : null,
                 pressed ? styles.cardPressed : null

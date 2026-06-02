@@ -151,7 +151,7 @@ export default function OnboardingSubFlow() {
 
             <Pressable 
               onPress={handleAction}
-              style={({ hovered, pressed }) => [
+              style={({ hovered, pressed }: any) => [
                 styles.actionBtn,
                 (hovered || pressed) ? styles.btnActive : null
               ] as ViewStyle[]}
