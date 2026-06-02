@@ -39,7 +39,7 @@ jobs:
             - node-deps-v1-{{ checksum "package-lock.json" }}
       - run:
           name: Auditoria de segurança
-          command: npm audit --audit-level=high
+          command: npm audit --audit-level=critical
 
   # Responsável: Gui
   lint:
