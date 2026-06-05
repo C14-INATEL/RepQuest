@@ -59,7 +59,7 @@ Desenvolvido pelo grupo da disciplina C14: Engenharia de Software do Inatel, uni
 
 ## 🧪 Testes
 
-O projeto utiliza **Jest** com **React Native Testing Library**. São mais de 70 testes unitários cobrindo as telas principais, contexto global, hooks e fluxos de navegação.
+O projeto utiliza **Jest** com **React Native Testing Library**. São mais de 80 testes unitários cobrindo as telas principais, contexto global, hooks e fluxos de navegação.
 
 ```bash
 # Rodar todos os testes
@@ -325,13 +325,13 @@ Na pratica, o criterio de testes foi aplicado rigorosamente para commits de codi
 
 | Metrica | Valor |
 |---|---|
-| Pull Requests mergeados | 32 |
+| Pull Requests mergeados | 39 |
 | Branches ativas | 6 (uma por integrante) |
-| Testes unitarios | 74 (10 suites) |
+| Testes unitarios | 80 (10 suites) |
 | Jobs de CI/CD | 6 (install, lint, type-check, security-audit, run-tests, eas-build) |
 | Cobertura de statements | 91% |
 | Historias de usuario | 8 (com Given/When/Then e rastreabilidade) |
-| Commits no main | 95+ |
+| Commits no main | 113+ |
 
 ---
 
