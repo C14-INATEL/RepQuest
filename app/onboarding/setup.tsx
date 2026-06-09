@@ -65,15 +65,9 @@ export default function OnboardingSubFlow() {
   }
   
   if (step === 'create') {
-    console.log("Consagrando República:", nomeRep);
-    // Aqui vamos mandar para a tela de SUCESSO que vamos criar
-    // Ela vai mostrar o código para o Admin
-    router.push('/onboarding/success?type=admin'); 
+    router.push('/onboarding/success?type=admin');
   } else {
-    console.log("Sintonizando com código:", inviteCode);
-    // Aqui, após validar o código, mandamos direto para o Mural
-    // Usamos replace para o usuário não conseguir "voltar" pro onboarding
-    router.replace('/(tabs)'); 
+    router.replace('/(tabs)');
   }
 };
 

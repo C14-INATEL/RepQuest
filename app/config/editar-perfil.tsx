@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
+import { useRep } from '../../contexts/RepContext';
 import React, { useState } from 'react';
 import {
     ImageBackground,
@@ -23,8 +24,9 @@ const AVATARES = ['user-astronaut', 'user-ninja', 'user-tie', 'user-graduate', '
 
 export default function EditarPerfil() {
   const router = useRouter();
-  const [nome, setNome] = useState('Eduardo Bertozzi');
-  const [avatarSelecionado, setAvatarSelecionado] = useState('user-astronaut');
+  const { nomeUsuario, avatarUsuario, setNomeUsuario, setAvatarUsuario } = useRep();
+  const [nome, setNome] = useState(nomeUsuario);
+  const [avatarSelecionado, setAvatarSelecionado] = useState(avatarUsuario);
 
   const [fontsLoaded] = useFonts({
     'ZeldaFont': require('../../assets/fonts/HyliaSerif.otf'),
@@ -34,7 +36,8 @@ export default function EditarPerfil() {
 
   const salvar = () => {
     if (Platform.OS !== 'web') Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    console.log("Perfil Salvo:", { nome, avatarSelecionado });
+    setNomeUsuario(nome);
+    setAvatarUsuario(avatarSelecionado);
     router.back();
   };
 

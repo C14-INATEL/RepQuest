@@ -135,8 +135,11 @@ export default function PerfilScreen() {
           <Text style={[styles.sectionTitle, fontStyle]}>Códice do Desenvolvedor</Text>
           <Pressable
             onPress={() => handleLinkPress('https://github.com/C14-INATEL/RepQuest')}
+<<<<<<< HEAD
             accessibilityLabel="Abrir repositório RepQuest no GitHub"
             accessibilityRole="link"
+=======
+>>>>>>> df7df65a7021f73d17469743030b11f6dc286b42
             style={({ hovered, pressed }: any) => [
               styles.githubCard,
               (hovered || pressed) && styles.githubCardHover
