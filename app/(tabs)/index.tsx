@@ -2,7 +2,7 @@ import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import { useFonts } from 'expo-font';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -42,6 +42,8 @@ export default function MissoesScreen() {
     loading 
   } = useRep();
   
+  const nivelAtual = Math.floor(totalRupes / 500) + 1;
+  const notifTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [notificacao, setNotificacao] = useState({ visivel: false, texto: '' });
   const [modalVisivel, setModalVisivel] = useState(false);
   const [novaMissao, setNovaMissao] = useState({ titulo: '', xp: '' });
@@ -70,7 +72,8 @@ export default function MissoesScreen() {
     setMissoesGlobal(missoes.filter((m) => m.id !== id));
     
     setNotificacao({ visivel: true, texto: `RECOMPENSA: +${xp} RUPES RESGATADAS!` });
-    setTimeout(() => {
+    if (notifTimerRef.current) clearTimeout(notifTimerRef.current);
+    notifTimerRef.current = setTimeout(() => {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setNotificacao({ visivel: false, texto: '' });
     }, 3500);
@@ -104,7 +107,7 @@ export default function MissoesScreen() {
       
       <View style={styles.statsContainer}>
         <Pressable style={({ hovered }: any) => [styles.levelBadge, hovered && styles.badgeHover]}>
-          <Text style={[styles.levelText, fontStyle]}>NÍVEL 04</Text>
+          <Text style={[styles.levelText, fontStyle]}>NÍVEL {String(nivelAtual).padStart(2, '0')}</Text>
         </Pressable>
         <Pressable style={({ hovered }: any) => [styles.xpBadge, hovered && styles.badgeHoverXp]}>
           <Text style={[styles.xpText, fontStyle]}>{totalRupes.toLocaleString()} RUPES</Text>
@@ -155,12 +158,18 @@ export default function MissoesScreen() {
             />
           )}
           ListHeaderComponent={renderHeader}
+          ListEmptyComponent={
+            <View style={{ alignItems: 'center', marginTop: 40, opacity: 0.5 }}>
+              <Text style={{ color: ZONAI_CYAN, fontSize: 11, fontWeight: '900', letterSpacing: 3 }}>NENHUMA MISSÃO ATIVA</Text>
+              <Text style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, marginTop: 8, letterSpacing: 1 }}>Toque em + para adicionar uma nova aventura</Text>
+            </View>
+          }
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
         />
 
         <Pressable 
-          style={({ hovered, pressed }) => [styles.fab, (hovered || pressed) && { transform: [{ scale: 1.1 }] }]}
+          style={({ hovered, pressed }: any) => [styles.fab, (hovered || pressed) && { transform: [{ scale: 1.1 }] }]}
           onPress={() => setModalVisivel(true)}
         >
           <LinearGradient colors={[ZONAI_CYAN, '#004d4d']} style={styles.fabGradient}>

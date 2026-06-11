@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Dimensions,
   FlatList,
   ImageBackground,
@@ -48,13 +49,14 @@ export default function DespesasScreen() {
   const totalDivida = despesas.reduce((acc, curr) => acc + curr.valor, 0);
 
   const adicionarDespesa = () => {
-    if (!novaDespesa.titulo || !novaDespesa.valor) return;
+    const valorParsed = parseFloat(novaDespesa.valor);
+    if (!novaDespesa.titulo || isNaN(valorParsed) || valorParsed <= 0) return;
 
-    const idUnico = Math.random().toString(36).substr(2, 9);
+    const idUnico = Math.random().toString(36).slice(2, 11);
     const itemFormatado = {
       id: idUnico,
       titulo: novaDespesa.titulo,
-      valor: parseFloat(novaDespesa.valor),
+      valor: valorParsed,
       categoria: "coins",
       icon: "coins",
     };
@@ -67,8 +69,14 @@ export default function DespesasScreen() {
   };
 
   const pagarDespesa = (id: string, valor: number) => {
+    if (totalRupes < valor) {
+      Alert.alert(
+        "Rúpias insuficientes",
+        `Você precisa de ${valor} R mas possui apenas ${totalRupes} R no tesouro.`
+      );
+      return;
+    }
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-
     gastarRupes(valor);
     setDespesasGlobal(despesas.filter((item) => item.id !== id));
   };

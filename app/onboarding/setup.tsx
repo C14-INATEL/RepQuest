@@ -60,16 +60,25 @@ export default function OnboardingSubFlow() {
   };
 
   const handleAction = () => {
-  if (Platform.OS !== 'web') {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-  }
-  
-  if (step === 'create') {
-    router.push('/onboarding/success?type=admin');
-  } else {
-    router.replace('/(tabs)');
-  }
-};
+    if (step === 'create' && !nomeRep.trim()) {
+      Alert.alert('Nome necessário', 'Dê um nome digno à sua república antes de consagrá-la.');
+      return;
+    }
+    if (step === 'join' && inviteCode.trim().length < 4) {
+      Alert.alert('Código inválido', 'Insira o código de convite completo para sincronizar.');
+      return;
+    }
+
+    if (Platform.OS !== 'web') {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    }
+
+    if (step === 'create') {
+      router.push('/onboarding/success?type=admin');
+    } else {
+      router.replace('/(tabs)');
+    }
+  };
 
   const currentIcon: IconName = step === 'create' ? 'castle' : 'key-variant';
 
@@ -151,7 +160,7 @@ export default function OnboardingSubFlow() {
 
             <Pressable 
               onPress={handleAction}
-              style={({ hovered, pressed }) => [
+              style={({ hovered, pressed }: any) => [
                 styles.actionBtn,
                 (hovered || pressed) ? styles.btnActive : null
               ] as ViewStyle[]}
