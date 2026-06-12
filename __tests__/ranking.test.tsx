@@ -62,6 +62,11 @@ jest.mock('../constants/moradores', () => ({
 const createRepState = (overrides = {}) => ({
   totalRupes: 1250,
   loading: false,
+<<<<<<< HEAD
+=======
+  nomeUsuario: 'Eduardo Bertozzi',
+  avatarUsuario: 'user-astronaut',
+>>>>>>> 25de68ba8993e7b8cbe8ca7cc2eb41c84fa84229
   ...overrides,
 });
 
@@ -133,7 +138,11 @@ it('ExibicaoRupesTest', () => {
 
 // totalRupesUndefinedTest — Eduardo com 0 rupes cai para o 6º
 it('totalRupesUndefinedTest', () => {
+<<<<<<< HEAD
   mockUseRep.mockReturnValue({ totalRupes: undefined, loading: false });
+=======
+  mockUseRep.mockReturnValue({ totalRupes: undefined, loading: false, nomeUsuario: 'Eduardo Bertozzi', avatarUsuario: 'user-astronaut' });
+>>>>>>> 25de68ba8993e7b8cbe8ca7cc2eb41c84fa84229
   expect(() => render(<RankingScreen />)).not.toThrow();
   expect(screen.getByTestId("podium-position-1").props.children).toBe("Breno");
   expect(screen.getByTestId("list-position-6").props.children).toBe("EDUARDO BERTOZZI"); // ← era list-position-4
@@ -143,14 +152,18 @@ it('totalRupesUndefinedTest', () => {
 it('NomeUndefinedTest', () => {
   // Sobrescreve a variável — só esse teste usa morador sem nome
   mockMoradores = [
-    { id: '2', nome: undefined as string | undefined,         nivel: 3, avatar: 'user-ninja',    rupes_base: 1100 },
+    { id: '2', nome: undefined as unknown as string,          nivel: 3, avatar: 'user-ninja',    rupes_base: 1100 },
     { id: '3', nome: 'Caio Inatel',      nivel: 3, avatar: 'user-tie',      rupes_base: 950  },
     { id: '4', nome: 'Gustavo Dev',      nivel: 2, avatar: 'user-secret',   rupes_base: 800  },
     { id: '5', nome: 'Morador Fantasma', nivel: 1, avatar: 'user-ghost',    rupes_base: 450  },
     { id: '6', nome: 'Calouro 01',       nivel: 1, avatar: 'user-graduate', rupes_base: 200  },
   ];
 
+<<<<<<< HEAD
   mockUseRep.mockReturnValue({ totalRupes: 999, loading: false });
+=======
+  mockUseRep.mockReturnValue({ totalRupes: 999, loading: false, nomeUsuario: 'Eduardo Bertozzi', avatarUsuario: 'user-astronaut' });
+>>>>>>> 25de68ba8993e7b8cbe8ca7cc2eb41c84fa84229
 
   expect(() => render(<RankingScreen />)).not.toThrow();
   // Eduardo (999) em 1º, desconhecido (1100) em... espera, 1100 > 999

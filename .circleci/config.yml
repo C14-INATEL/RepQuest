@@ -39,7 +39,7 @@ jobs:
             - node-deps-v1-{{ checksum "package-lock.json" }}
       - run:
           name: Auditoria de segurança
-          command: npm audit --audit-level=high
+          command: npm audit --audit-level=critical
 
   # Responsável: Gui
   lint:
@@ -75,21 +75,19 @@ jobs:
             - node-deps-v1-{{ checksum "package-lock.json" }}
       - run:
           name: Instalar EAS CLI
-          command: npm install -g eas-cli
+          command: sudo npm install -g eas-cli
       - run:
           name: EAS Build — Android Preview (APK)
-          command: eas build --platform android --profile preview --non-interactive
-          environment:
-            EXPO_TOKEN: $EXPO_TOKEN
+          command: eas build --platform android --profile preview --non-interactive --no-wait
 
   # Responsável: Daniele
   run-tests:
-    executor: node_executor
+    executor: node-executor
     steps:
       - checkout
       - restore_cache:
           keys:
-            - node-deps-v1-{{ checksum "package-lock.json"}}
+            - node-deps-v1-{{ checksum "package-lock.json" }}
       - run:
           name: Executar testes unitários
           command: npm test

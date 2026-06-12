@@ -59,7 +59,7 @@ Desenvolvido pelo grupo da disciplina C14: Engenharia de Software do Inatel, uni
 
 ## 🧪 Testes
 
-O projeto utiliza **Jest** com **React Native Testing Library**. São mais de 70 testes unitários cobrindo as telas principais, contexto global, hooks e fluxos de navegação.
+O projeto utiliza **Jest** com **React Native Testing Library**. São mais de 83 testes unitários cobrindo as telas principais, contexto global, hooks e fluxos de navegação.
 
 ```bash
 # Rodar todos os testes
@@ -94,14 +94,6 @@ O grupo utilizou ferramentas de IA como apoio ao longo do desenvolvimento. O uso
 - **Claude (Anthropic):** via Claude Code (extensão no VS Code)
 - **ChatGPT (OpenAI):** via interface web
 - **Codex (OpenAI):** via ChatGPT (extensão do VS Code)
-
-### Para que foram usados
-
-- Geração de testes unitários com mocks para React Native
-- Configuração do pipeline CircleCI + EAS Build
-- Debugging de erros de configuração (ESLint, TypeScript, dependências Expo)
-- Refatoração de componentes e hooks
-- Revisão de código e sugestões de melhoria
 
 ### Exemplos reais de prompts utilizados
 
@@ -176,9 +168,22 @@ Resposta aceita com ajustes: a IA além da estrutura criou outras histórias de 
 
 Resposta aceita: Não entregou código pronto e realmente atuou como um sênior auxiliando a cobrir ~100% da branch.
 
-### Dinâmica de uso
+## Samile Barbosa
 
-A IA foi usada majoritariamente de forma individual por cada integrante em suas próprias branches, principalmente para geração de testes e resolução de erros pontuais. Em alguns momentos foi usada em conjunto durante reuniões do grupo para decisões de arquitetura e configuração do pipeline.
+**Prompt 1: Badge desbloqueável por nível**
+> "No meu app React Native com tema Zelda, tenho um sistema de níveis baseado em rupias. Quero adicionar um 4º badge na seção de relíquias do perfil usando star-four-points do MaterialCommunityIcons, com cor #ff80ff, que só é desbloqueado quando o usuário atinge o nível 5."
+
+Resposta aceita com ajustes: a IA gerou a estrutura condicional do badge corretamente, mas a lógica de desbloqueio precisou ser adaptada para usar o `nivel` calculado dinamicamente a partir das `totalRupes` do `RepContext`, em vez de um valor hardcoded. O ícone e a cor foram aplicados conforme sugerido.
+
+**Prompt 2: Acessibilidade em componentes Pressable**
+> "Tenho vários componentes Pressable em uma tela React Native. Como adiciono accessibilityLabel e accessibilityRole corretamente para melhorar a experiência com leitores de tela? Preciso de exemplos para um botão de navegação interna e um link externo."
+
+Resposta aceita: a IA explicou a diferença entre `accessibilityRole="button"` para navegação interna e `accessibilityRole="link"` para links externos, com exemplos aplicáveis diretamente à tela de perfil. As labels foram adaptadas para refletir o contexto do app (ex: `"Ver repositório no GitHub"`).
+
+**Prompt 3: Testes de acessibilidade e badges com Testing Library**
+> "Escreva testes com @testing-library/react-native para verificar: (1) que 4 badges estão sendo renderizados na tela de perfil usando getByText com os nomes dos ícones, e (2) que os botões têm accessibilityLabel correto usando getByLabelText."
+
+Resposta aceita com ajustes: os testes gerados precisaram ser adaptados para usar os mocks corretos do `RepContext` já existentes no projeto. A estrutura de `getByLabelText` foi mantida, mas os valores das labels foram corrigidos para corresponder exatamente ao que foi implementado na tela.
 
 ### O que não foi feito por IA
 
@@ -251,13 +256,35 @@ As jornadas de nossos heróis foram mapeadas através das seguintes narrativas e
 ---
 
 ### 📜 Conto 6: O Códice do Herói (Perfil)
-**Prioridade:** Média | **Status:** Entregue (parcial: perfil exibe dados do contexto global, nome fixo ainda não editável com persistência)
-**Rastreabilidade:** PR #6 (`feat: adiciona tela Perfil`) -> PR #23 e PR #28 -> [`__tests__/perfil.test.tsx`](__tests__/perfil.test.tsx)
+**Prioridade:** Média | **Status:** Entregue
+**Rastreabilidade:** PR #6 (`feat: adiciona tela Perfil`) -> PR #22 (`refactor: torna nome e avatar dinamicos`) -> PR #23 e PR #28 -> [`__tests__/perfil.test.tsx`](__tests__/perfil.test.tsx)
 
 **Como** morador, **quero** visualizar meu perfil com nível, rúpias totais e conquistas desbloqueadas **para** que eu acompanhe minha evolução na república e sinta que minhas contribuições são reconhecidas.
 - **Given** (Dado que) o morador acessa a aba "Perfil".
 - **When** (Quando) a tela é carregada.
-- **Then** (Então) o sistema exibe o nível calculado a partir das rúpias acumuladas, a barra de progresso para o próximo nível e os badges desbloqueados conforme o nível atingido.
+- **Then** (Então) o sistema exibe o nome e avatar do usuario carregados do contexto global, o nível calculado a partir das rúpias acumuladas, a barra de progresso para o próximo nível e os badges desbloqueados conforme o nível atingido.
+
+---
+
+### 📜 Conto 7: O Painel do Patriarca (Gestão de Membros)
+**Prioridade:** Média | **Status:** Entregue
+**Rastreabilidade:** PR #1 (`feat: implementado fluxo de onboarding, gestão de membros`) -> PR #24 (`test: adiciona testes unitarios para tela de GestaoMembros`) -> [`__tests__/gestao-membros.test.tsx`](__tests__/gestao-membros.test.tsx)
+
+**Como** administrador da república, **quero** visualizar todos os moradores e remover membros que saíram **para** que a lista esteja sempre atualizada e o código de convite seja controlado.
+- **Given** (Dado que) o administrador acessa o painel de gestão de membros.
+- **When** (Quando) ele pressiona o botão de expulsar ao lado de um morador.
+- **Then** (Então) um alerta de confirmação é exibido e, ao confirmar, o morador é removido da lista imediatamente sem necessidade de recarregar a tela.
+
+---
+
+### 📜 Conto 8: A Forja da Identidade (Editar Perfil)
+**Prioridade:** Média | **Status:** Entregue
+**Rastreabilidade:** PR #22 (`refactor: torna nome e avatar dinamicos`) -> PR #24 (`test: adiciona testes unitarios para tela de EditarPerfil`) -> [`__tests__/editar-perfil.test.tsx`](__tests__/editar-perfil.test.tsx)
+
+**Como** morador, **quero** editar meu nome e avatar **para** que minha identidade na república reflita quem eu sou e seja reconhecida por todos os outros moradores em todas as telas.
+- **Given** (Dado que) o morador acessa a tela de edição de perfil.
+- **When** (Quando) ele altera o nome no campo de texto, seleciona um novo avatar e pressiona "GRAVAR NA PEDRA".
+- **Then** (Então) o nome e o avatar são atualizados no contexto global e persistidos via AsyncStorage, refletindo imediatamente no ranking, no perfil e na gestão de membros.
 
 ---
 
@@ -265,78 +292,106 @@ As jornadas de nossos heróis foram mapeadas através das seguintes narrativas e
 
 O grupo adotou uma abordagem **Kanban informal**, sem sprints fixos ou cerimônias de Scrum. A escolha foi motivada pela natureza assíncrona do trabalho acadêmico: cada integrante contribuía conforme sua disponibilidade, e o progresso era contínuo em vez de dividido em iterações fechadas.
 
-### Papéis e Responsabilidades
+### Kanban na Pratica
 
-Não adotamos papéis formais (PO, Scrum Master, QA dedicado). A divisão emergiu organicamente conforme as habilidades e afinidades de cada membro:
+O GitHub funcionou como nosso quadro Kanban. Cada Pull Request representava uma tarefa passando pelos estados:
 
-| Integrante | Contribuição principal |
+```
+Em desenvolvimento (branch pessoal)  -->  Em revisao (PR aberto)  -->  Concluido (mergeado no main)
+```
+
+A evolucao incremental do pipeline e a evidencia mais clara do Kanban em acao: cada job foi uma tarefa independente que passou exatamente por esses tres estados, entregue via PR individual sem bloquear o trabalho dos outros membros.
+
+| PR | Quem | Tarefa entregue |
+|---|---|---|
+| #16 | Gabriel | Job base `install-dependencies` + estrutura do CircleCI |
+| #17 | Gabriel | `eas.json` com perfis de build Android |
+| #19 | Samile | Job `security-audit` |
+| #20 | Guilherme | Job `lint` |
+| #26 | Rafael | Job `type-check` |
+| #30 | Daniele | Job `run-tests` |
+| #35 | Gabriel | Fix EACCES + TypeScript + audit level |
+| #37 | Gabriel | Job `eas-build-android` funcional com EXPO_TOKEN correto |
+
+### Papeis e Responsabilidades
+
+Nao adotamos papeis formais (PO, Scrum Master, QA dedicado). A divisao emergiu organicamente conforme as habilidades e afinidades de cada membro:
+
+| Integrante | Contribuicao principal |
 |---|---|
-| Eduardo Bertozzi | Idealizador do projeto, arquitetura (Context API, AsyncStorage), telas de onboarding e gestão de membros, job CI `eas-build-android` |
-| Gabriel Morass | Estrutura do pipeline CircleCI, testes das telas de despesas e missões, documentação técnica |
-| Guilherme Almeida | Melhorias na tela principal (index.tsx), testes de missões e despesas, job CI `lint` |
-| Rafael Braga | Layout de navegação (HUD/tabs), testes do _layout, job CI `type-check` |
-| Daniele Letícia | Tela de ranking, testes unitários do ranking, job CI `run-tests` |
-| Samile Barbosa | Tela de perfil, testes unitários do perfil, job CI `security-audit` |
+| Eduardo Bertozzi | Idealizador do projeto, arquitetura (Context API, AsyncStorage), telas de onboarding e gestao de membros, job CI `eas-build-android` |
+| Gabriel Morass | Estrutura do pipeline CircleCI, testes de 6 telas, refactoring do RepContext, documentacao tecnica |
+| Guilherme Almeida | Melhorias na tela principal (index.tsx), testes de missoes e despesas, job CI `lint` |
+| Rafael Braga | Layout de navegacao (HUD/tabs), testes do _layout com 100% de cobertura, job CI `type-check` |
+| Daniele Leticia | Tela de ranking, testes unitarios do ranking, job CI `run-tests` |
+| Samile Barbosa | Tela de perfil, testes unitarios do perfil, job CI `security-audit` |
 
-### Ferramentas e Cadência
+### Tomada de Decisao
 
-- **Comunicação:** WhatsApp para decisões rápidas e alinhamentos entre os membros.
-- **Versionamento:** GitHub com uma branch por integrante e PRs obrigatórios para merge no main.
+As decisoes tecnicas centrais foram discutidas em grupo via WhatsApp. Exemplos:
+
+- **Context API vs Redux:** Redux foi descartado por exigir boilerplate desproporcional para a complexidade do estado do app. Context API nativa resolve sem dependencia extra. Decisao tomada pelo Eduardo na estrutura inicial do projeto.
+- **CircleCI vs GitHub Actions:** GitHub Actions foi descartado por ser proibido pelo enunciado. CircleCI foi escolhido por nao exigir servidor proprio e ter suporte nativo ao Expo. Decisao tomada pelo Gabriel ao configurar o pipeline.
+- **AsyncStorage vs SQLite:** os dados do app sao simples (numeros e arrays JSON). SQLite seria desproporcional para esse volume e estrutura. AsyncStorage resolve com uma API mais simples e sem configuracao nativa adicional.
+- **EAS Build com `--no-wait` vs aguardar o build:** o build Android leva 15-25 minutos. Aguardar no pipeline bloquearia todos os PRs do grupo durante esse tempo e consumiria o plano gratuito do CircleCI. A decisao foi usar `--no-wait` para disparar o build e retornar imediatamente, acompanhando o resultado no painel do expo.dev. O objetivo do job e provar que a configuracao esta correta (token, credenciais, eas.json) — nao compilar em tempo real a cada PR. Decisao tomada pelo Gabriel no PR #37.
+
+### Ferramentas e Cadencia
+
+- **Comunicacao:** WhatsApp para decisoes rapidas e alinhamentos entre os membros.
+- **Versionamento:** GitHub com uma branch por integrante e PRs obrigatorios para merge no main.
 - **CI/CD:** CircleCI com 1 job por integrante, adicionados incrementalmente via Pull Request.
-- **Revisão de código:** Pull Requests com ao menos 1 aprovação antes do merge.
+- **Revisao de codigo:** Pull Requests com ao menos 1 aprovacao antes do merge.
 
-### Definição de Pronto (DoD)
+### Definicao de Pronto (DoD)
 
-Uma contribuição era considerada pronta quando:
-1. O código estava commitado na branch do integrante com mensagem descritiva.
+Uma contribuicao era considerada pronta quando:
+1. O codigo estava commitado na branch do integrante com mensagem descritiva.
 2. Um Pull Request foi aberto para a branch `main`.
-3. Os testes passavam localmente (quando aplicável ao tipo de contribuição).
+3. Os testes passavam localmente (quando aplicavel ao tipo de contribuicao).
 4. Ao menos um outro membro revisou o PR antes do merge.
 
-### Métricas do Projeto
+Na pratica, o criterio de testes foi aplicado rigorosamente para commits de codigo. Commits de documentacao e CI foram revisados semanticamente, sem exigir execucao de testes.
 
-| Métrica | Valor |
+**Exemplo concreto:** o PR #35 foi aberto com 3 commits corrigindo erros de TypeScript e o nivel do security-audit. O PR so foi mergeado depois que o pipeline verde confirmou que todos os jobs passavam — nenhum membro aprovou manualmente sem essa evidencia automatica.
+
+### Metricas do Projeto
+
+| Metrica | Valor |
 |---|---|
-| Pull Requests mergeados | 28 |
+| Pull Requests mergeados | 39 |
 | Branches ativas | 6 (uma por integrante) |
-| Testes unitários | 70+ (10 suites) |
-| Jobs de CI/CD | 5 (install, lint, type-check, security-audit, eas-build) |
-| Cobertura de statements | 88% |
+| Testes unitarios | 83 (10 suites) |
+| Jobs de CI/CD | 6 (install, lint, type-check, security-audit, run-tests, eas-build) |
+| Cobertura de statements | 91% |
+| Historias de usuario | 8 (com Given/When/Then e rastreabilidade) |
+| Commits no main | 123+ |
 
 ---
 
 ## 🔄 Dinâmica de Desenvolvimento
 
-### Como as tarefas foram divididas
-
-Cada integrante assumiu espontaneamente a responsabilidade por uma ou mais partes do aplicativo. As decisões técnicas centrais, como a escolha do Context API sobre Redux, o uso do Expo Router em vez de React Navigation manual e a adoção do CircleCI no lugar do GitHub Actions (proibido pelo enunciado), foram discutidas em grupo via WhatsApp.
-
-### Fluxo de branches e commits
-
-Adotamos um fluxo simples e direto:
-
-```
-branch pessoal -> commit -> Pull Request -> revisão -> merge no main
-```
-
-- Cada integrante trabalhava exclusivamente em sua branch (nomeada com seu apelido).
-- Alguns membros seguiram Conventional Commits (`feat:`, `test:`, `ci:`, `docs:`); outros usaram mensagens livres.
-- PRs eram abertos para cada contribuição significativa, garantindo rastreabilidade.
-
 ### Principal desafio
 
-O maior bloqueio foi **sincronizar o trabalho de 6 pessoas com disponibilidades diferentes**. Sem sprints com datas fixas, algumas entregas aguardavam enquanto outras estavam prontas há dias. Um exemplo concreto: o `RepContext` (estado global do app) foi criado pelo Eduardo antes de estar totalmente documentado, o que dificultou o trabalho inicial dos demais membros para consumir o contexto em seus próprios componentes e testes.
+O maior bloqueio foi sincronizar o trabalho de 6 pessoas com disponibilidades diferentes. Sem sprints com datas fixas, algumas entregas aguardavam enquanto outras estavam prontas há dias. Um exemplo concreto: o `RepContext` foi criado pelo Eduardo antes de estar documentado, o que dificultou os outros membros para consumir o contexto em seus componentes e testes. Cada um teve que descobrir a API do contexto lendo o código.
 
 ### Conflitos e resolução
 
-Tivemos conflitos de merge quando membros modificaram áreas próximas do código simultaneamente. O commit `chore: resolve merge conflict in README.md` (PR #16) registra um desses casos, resolvido manualmente preservando as contribuições de ambos os lados.
+Tivemos dois conflitos de merge significativos ao longo do projeto:
+
+**Conflito 1 (PR #16):** Dois membros modificaram o README simultaneamente em branches separadas. Resolvido manualmente preservando as contribuições dos dois lados.
+
+**Conflito 2 (PR #31):** A branch da Daniele tinha a versão antiga do `ranking.tsx` com nome hardcoded (`Eduardo Bertozzi`), enquanto o main já tinha o refactoring com `nomeUsuario` dinâmico do PR #22. O conflito gerou marcadores `<<<<<<< HEAD` no arquivo que quebraram os testes com `SyntaxError`. Resolvido mantendo a versão dinâmica e descartando o nome fixo.
+
+A lição prática: atualizar a branch com o main (`git pull origin main`) antes de abrir qualquer PR teria evitado o segundo conflito.
+
+**Conflito 3 — Autenticação do EAS Build (PRs #35, #37):** o job `eas-build-android` falhava com "The bearer token is invalid" mesmo com o token correto configurado no CircleCI. A investigação durou 3 dias e incluiu trocar o token, verificar permissões da conta e testar diferentes formatos. A causa raiz foi inesperada: o bloco `environment: EXPO_TOKEN: $EXPO_TOKEN` no YAML do CircleCI passa o valor literal da string `$EXPO_TOKEN` ao processo, em vez do valor da variável configurada no painel. Removendo o bloco inteiro, o step herda a variável do projeto automaticamente. A lição: ler a documentação de escopo de variáveis de ambiente da ferramenta de CI antes de assumir que a sintaxe funciona como em bash.
 
 ### Lições aprendidas
 
-- **Definir um backlog antes de começar:** a divisão emergencial funcionou, mas um backlog formal desde o início teria evitado sobreposições e retrabalho.
-- **Padronizar commits desde o dia 1:** a mistura de estilos de mensagem dificulta a leitura do histórico e a geração automática de changelogs.
-- **Criar o job de CI para testes antes de escrever os testes:** os testes foram escritos sem feedback automático do CI, o que atrasou a identificação de problemas de ambiente.
-- **Documentar o estado global logo no início:** o `RepContext` era a peça central do app, mas a falta de documentação inicial gerou retrabalho para os membros que o consumiram depois.
+- **Documentar a API do estado global logo no início:** o `RepContext` era a peça central do app, mas a falta de documentação inicial gerou retrabalho. Cada membro teve que descobrir as funções (`ganharRupes`, `gastarRupes`, `setMissoesGlobal`) lendo o código — retrabalho que um README interno ou comentário JSDoc teria evitado. Evidencia: PR #22 precisou atualizar 4 telas de uma vez porque todas consumiam o contexto de formas inconsistentes.
+- **Criar o job de CI para testes antes de escrever os testes:** os testes existiam localmente por semanas antes de rodarem automaticamente no CI (job `run-tests` adicionado no PR #30). Problemas de ambiente (ESLint sem globais do Jest, TypeScript sem tipos do Jest) foram identificados com atraso — corrigidos nos PRs #34 e #35.
+- **Padronizar Conventional Commits desde o dia 1:** os primeiros commits do projeto usavam mensagens livres (`"Adicionando alteração na pasta tabs"`, `"Atualiza index.tsx"`). A partir do PR #16 o grupo adotou `feat:`, `fix:`, `ci:`, `docs:`, `test:`, `refactor:`. A diferenca na legibilidade do historico e visivel no `git log`.
+- **Atualizar a branch com o main antes de abrir PR:** o conflito do `ranking.tsx` (PR #31) teria sido evitado com um `git pull origin main` antes do PR. Depois desse incidente o grupo adotou isso como parte informal do processo antes de qualquer abertura de PR.
 
 ---
 
@@ -378,6 +433,27 @@ O pipeline foi reestruturado de um job único (`install-dependencies`) para uma 
 A tela de missões foi refatorada para separar a lógica de negócio da renderização, integrar o `CardDeMissao` como componente reutilizável e adicionar `LayoutAnimation` para transições suaves ao completar missões.
 
 **Motivação:** a versão anterior misturava lógica de UI com lógica de negócio na mesma função. A separação melhora a legibilidade, facilita os testes unitários e torna o `CardDeMissao` reutilizável em outras partes do app.
+
+### 6. Migração de identidade do usuário de hardcoded para Context API (Gabriel, PR #22)
+**Commit:** `refactor: torna nome e avatar do usuario dinamicos via RepContext`
+
+O nome `Eduardo Bertozzi` e o avatar `user-astronaut` estavam escritos diretamente no código de quatro telas diferentes: `ranking.tsx`, `perfil.tsx`, `editar-perfil.tsx` e `gestao-membros.tsx`. A refatoração moveu esses dados para o `RepContext`, com persistência via AsyncStorage usando as chaves `@RepQuest:nome` e `@RepQuest:avatar`.
+
+**Motivação:** dados hardcoded tornam o app monousuário e geram inconsistências: alterar o nome em uma tela não refletia nas outras. Com o contexto global, qualquer mudança no perfil propaga automaticamente para todas as telas que consomem `useRep()`.
+
+### 7. Substituição de API depreciada Clipboard por Share (Gabriel, PR #22)
+**Commit:** `refactor: torna nome e avatar do usuario dinamicos via RepContext`
+
+A tela de gestão de membros usava `Clipboard` do `react-native` para copiar o código de convite. Essa API foi removida do React Native na versão 0.81.5 usada pelo projeto. A refatoração substituiu por `Share.share()`, que abre o painel nativo de compartilhamento do sistema operacional.
+
+**Motivação:** além da correção técnica necessária (Clipboard removido causaria erro em runtime), `Share` oferece UX superior: o usuário pode copiar, enviar via WhatsApp, e-mail ou qualquer outro app sem sair do RepQuest.
+
+### 8. Expansão da cobertura de branches do layout de navegação (Rafael, PR #26)
+**Commit:** `test(layout): adiciona novos testes para garantir maior branch coverage`
+
+Os testes do `_layout.tsx` cobriam apenas o caminho principal de renderização. A refatoração dos testes adicionou casos para branches não cobertos: estado de aba ativa vs inativa, plataforma iOS vs Android (altura do tabBar), hover state do TabButton e accessibilityState indefinido.
+
+**Motivação:** branch coverage de 45% significa que metade das decisões condicionais do componente nunca eram exercidas pelos testes. Com a expansão para 100%, qualquer quebra em qualquer condição do layout é detectada automaticamente no CI.
 
 ---
 

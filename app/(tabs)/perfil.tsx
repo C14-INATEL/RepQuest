@@ -45,6 +45,7 @@ export default function PerfilScreen() {
     { id: 1, icon: 'shield-star', color: RUPEE_GOLD, unlocked: nivelAtual >= 1 },
     { id: 2, icon: 'sword-cross', color: ZONAI_CYAN, unlocked: nivelAtual >= 2 },
     { id: 3, icon: 'flash', color: '#fff', unlocked: nivelAtual >= 3 },
+    { id: 4, icon: 'star-four-points', color: '#ff80ff', unlocked: nivelAtual >= 5 },
   ];
 
   const handleLinkPress = (url: string) => {
@@ -134,6 +135,8 @@ export default function PerfilScreen() {
           <Text style={[styles.sectionTitle, fontStyle]}>Códice do Desenvolvedor</Text>
           <Pressable
             onPress={() => handleLinkPress('https://github.com/C14-INATEL/RepQuest')}
+            accessibilityLabel="Abrir repositório RepQuest no GitHub"
+            accessibilityRole="link"
             style={({ hovered, pressed }: any) => [
               styles.githubCard,
               (hovered || pressed) && styles.githubCardHover
@@ -170,6 +173,8 @@ export default function PerfilScreen() {
           <View style={styles.settingsGroup}>
             <Pressable 
               onPress={() => router.push('/config')}
+              accessibilityLabel="Ir para configurações do sistema"
+              accessibilityRole="button"
               style={({ hovered }: any) => [styles.settingsItem, hovered && styles.settingsItemHover]}
             >
               <View style={styles.settingsLeft}>
@@ -184,6 +189,8 @@ export default function PerfilScreen() {
             <Pressable 
               style={({ hovered }: any) => [styles.settingsItem, hovered && styles.settingsItemHover, { borderBottomWidth: 0 }]}
               onPress={() => handleLinkPress('https://inatelsr.com.br')}
+              accessibilityLabel="Abrir coordenadas da república"
+              accessibilityRole="link"
             >
               <View style={styles.settingsLeft}>
                 <View style={[styles.settingsIconWrapper, { backgroundColor: 'rgba(252, 172, 3, 0.1)' }]}>

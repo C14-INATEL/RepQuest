@@ -135,4 +135,28 @@ describe('PerfilScreen', () => {
     render(<PerfilScreen />);
     expect(screen.getByText('250 / 500 R')).toBeTruthy();
   });
+
+  // --- Testes das novas features (Samile) ---
+
+  it('exibe 4 badges na secao de reliquias', () => {
+    mockUseRep.mockReturnValue(createRepState({ totalRupes: 0 }));
+    render(<PerfilScreen />);
+    // 4 badges: shield-star, sword-cross, flash, star-four-points
+    expect(screen.getByText('shield-star')).toBeTruthy();
+    expect(screen.getByText('sword-cross')).toBeTruthy();
+    expect(screen.getByText('flash')).toBeTruthy();
+    expect(screen.getByText('star-four-points')).toBeTruthy();
+  });
+
+  it('botao do GitHub tem accessibilityLabel correto', () => {
+    mockUseRep.mockReturnValue(createRepState());
+    render(<PerfilScreen />);
+    expect(screen.getByLabelText('Abrir repositório RepQuest no GitHub')).toBeTruthy();
+  });
+
+  it('botao de configuracoes tem accessibilityLabel correto', () => {
+    mockUseRep.mockReturnValue(createRepState());
+    render(<PerfilScreen />);
+    expect(screen.getByLabelText('Ir para configurações do sistema')).toBeTruthy();
+  });
 });
