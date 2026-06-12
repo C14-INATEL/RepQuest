@@ -113,7 +113,7 @@ describe('Layout', () => {
     // Simula o estado de hover
     const styleWhenHovered = style({ hovered: true });
     expect(styleWhenHovered).toContainEqual(expect.objectContaining({ backgroundColor: 'rgba(0, 255, 209, 0.05)' }));
-    expect(styleWhenHovered).toContainEqual(expect.objectContaining({ transform: [{ scale: 1.1 }] }));
+    expect(styleWhenHovered).toContainEqual(expect.objectContaining({ transform: [{ scale: 1.01 }] }));
 
     // Simula o estado normal (não hover)
     const styleWhenNotHovered = style({ hovered: false });
