@@ -5,14 +5,15 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import {
-    ImageBackground,
-    Platform,
-    Pressable,
-    Share,
-    StyleSheet,
-    Text,
-    TextStyle,
-    View
+  ImageBackground,
+  Platform,
+  Pressable,
+  Share,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle
 } from 'react-native';
 
 const ZONAI_CYAN = '#00FFD1';
@@ -66,7 +67,13 @@ export default function SuccessScreen() {
              </Pressable>
           </View>
 
-          <Pressable onPress={() => router.replace('/(tabs)')} style={styles.entryBtn}>
+         <Pressable 
+            onPress={() => router.replace('/(tabs)')} 
+            style={({ hovered, pressed }) => [
+              styles.entryBtn,
+              (hovered || pressed) ? styles.btnActive : null
+            ] as ViewStyle[]}
+          >
             <LinearGradient colors={[ZONAI_CYAN, '#004d4d']} style={styles.btnGradient}>
               <Text style={[styles.btnText, fontStyle]}>ENTRAR NO MURAL</Text>
             </LinearGradient>
@@ -91,6 +98,7 @@ const styles = StyleSheet.create({
   shareBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: ZONAI_CYAN, paddingHorizontal: 20, paddingVertical: 12, borderRadius: 2 },
   shareBtnText: { color: '#000', fontSize: 10, fontWeight: '900', marginLeft: 10 },
   entryBtn: { marginTop: 60, width: '100%', borderRadius: 4, overflow: 'hidden' },
+  btnActive: { transform: [{ scale: 1.02 }], shadowColor: ZONAI_CYAN, shadowRadius: 15, shadowOpacity: 0.6 },
   btnGradient: { paddingVertical: 20, alignItems: 'center' },
   btnText: { color: '#000', fontSize: 14, letterSpacing: 2 },
 });

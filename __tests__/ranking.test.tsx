@@ -62,8 +62,11 @@ jest.mock('../constants/moradores', () => ({
 const createRepState = (overrides = {}) => ({
   totalRupes: 1250,
   loading: false,
+<<<<<<< HEAD
+=======
   nomeUsuario: 'Eduardo Bertozzi',
   avatarUsuario: 'user-astronaut',
+>>>>>>> 25de68ba8993e7b8cbe8ca7cc2eb41c84fa84229
   ...overrides,
 });
 
@@ -135,7 +138,11 @@ it('ExibicaoRupesTest', () => {
 
 // totalRupesUndefinedTest — Eduardo com 0 rupes cai para o 6º
 it('totalRupesUndefinedTest', () => {
+<<<<<<< HEAD
+  mockUseRep.mockReturnValue({ totalRupes: undefined, loading: false });
+=======
   mockUseRep.mockReturnValue({ totalRupes: undefined, loading: false, nomeUsuario: 'Eduardo Bertozzi', avatarUsuario: 'user-astronaut' });
+>>>>>>> 25de68ba8993e7b8cbe8ca7cc2eb41c84fa84229
   expect(() => render(<RankingScreen />)).not.toThrow();
   expect(screen.getByTestId("podium-position-1").props.children).toBe("Breno");
   expect(screen.getByTestId("list-position-6").props.children).toBe("EDUARDO BERTOZZI"); // ← era list-position-4
@@ -152,7 +159,11 @@ it('NomeUndefinedTest', () => {
     { id: '6', nome: 'Calouro 01',       nivel: 1, avatar: 'user-graduate', rupes_base: 200  },
   ];
 
+<<<<<<< HEAD
+  mockUseRep.mockReturnValue({ totalRupes: 999, loading: false });
+=======
   mockUseRep.mockReturnValue({ totalRupes: 999, loading: false, nomeUsuario: 'Eduardo Bertozzi', avatarUsuario: 'user-astronaut' });
+>>>>>>> 25de68ba8993e7b8cbe8ca7cc2eb41c84fa84229
 
   expect(() => render(<RankingScreen />)).not.toThrow();
   // Eduardo (999) em 1º, desconhecido (1100) em... espera, 1100 > 999

@@ -13,8 +13,8 @@ import {
   View
 } from 'react-native';
 
-import { useRep } from '../../contexts/RepContext';
 import { OUTROS_MORADORES } from '../../constants/moradores';
+import { useRep } from '../../contexts/RepContext';
 
 const { width } = Dimensions.get('window');
 const ZONAI_CYAN = '#00FFD1';
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   dividerLine: { flex: 1, height: 1, backgroundColor: 'rgba(0, 255, 209, 0.2)' },
   iconCenter: { marginHorizontal: 20, backgroundColor: 'transparent' },
   rankCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(5, 18, 18, 0.8)', padding: 18, borderRadius: 2, marginBottom: 12, borderWidth: 1, borderColor: 'rgba(0, 255, 209, 0.15)' },
-  rankCardHover: { backgroundColor: 'rgba(0, 255, 209, 0.08)', borderColor: ZONAI_CYAN, transform: [{ scale: 1.03 }] },
+  rankCardHover: { backgroundColor: 'rgba(0, 255, 209, 0.08)', borderColor: ZONAI_CYAN, transform: [{ scale: 1.01 }] },
   posicaoText: { color: ZONAI_CYAN, fontSize: 18, width: 45 },
   avatarPequeno: { width: 34, height: 34, borderRadius: 17, backgroundColor: 'rgba(0, 255, 209, 0.05)', justifyContent: 'center', alignItems: 'center', marginRight: 15, borderWidth: 1, borderColor: 'rgba(0, 255, 209, 0.2)' },
   infoWrapper: { flex: 1 },
