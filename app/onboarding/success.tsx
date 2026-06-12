@@ -69,7 +69,7 @@ export default function SuccessScreen() {
 
          <Pressable 
             onPress={() => router.replace('/(tabs)')} 
-            style={({ hovered, pressed }) => [
+            style={({ hovered, pressed }: any) => [
               styles.entryBtn,
               (hovered || pressed) ? styles.btnActive : null
             ] as ViewStyle[]}
