@@ -61,29 +61,20 @@ export default function OnboardingSubFlow() {
   };
 
   const handleAction = () => {
-<<<<<<< HEAD
     if (step === 'create' && !nomeRep.trim())
     {
       setNameError(true);
-=======
-    if (step === 'create' && !nomeRep.trim()) {
-      Alert.alert('Nome necessário', 'Dê um nome digno à sua república antes de consagrá-la.');
       return;
     }
     if (step === 'join' && inviteCode.trim().length < 4) {
       Alert.alert('Código inválido', 'Insira o código de convite completo para sincronizar.');
->>>>>>> 25de68ba8993e7b8cbe8ca7cc2eb41c84fa84229
       return;
     }
 
     if (Platform.OS !== 'web') {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     }
-<<<<<<< HEAD
     
-=======
-
->>>>>>> 25de68ba8993e7b8cbe8ca7cc2eb41c84fa84229
     if (step === 'create') {
       router.push('/onboarding/success?type=admin');
     } else {
