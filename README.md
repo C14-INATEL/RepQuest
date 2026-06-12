@@ -168,6 +168,23 @@ Resposta aceita com ajustes: a IA além da estrutura criou outras histórias de 
 
 Resposta aceita: Não entregou código pronto e realmente atuou como um sênior auxiliando a cobrir ~100% da branch.
 
+## Samile Barbosa
+
+**Prompt 4: Badge desbloqueável por nível**
+> "No meu app React Native com tema Zelda, tenho um sistema de níveis baseado em rupias. Quero adicionar um 4º badge na seção de relíquias do perfil usando star-four-points do MaterialCommunityIcons, com cor #ff80ff, que só é desbloqueado quando o usuário atinge o nível 5."
+
+Resposta aceita com ajustes: a IA gerou a estrutura condicional do badge corretamente, mas a lógica de desbloqueio precisou ser adaptada para usar o `nivel` calculado dinamicamente a partir das `totalRupes` do `RepContext`, em vez de um valor hardcoded. O ícone e a cor foram aplicados conforme sugerido.
+
+**Prompt 5: Acessibilidade em componentes Pressable**
+> "Tenho vários componentes Pressable em uma tela React Native. Como adiciono accessibilityLabel e accessibilityRole corretamente para melhorar a experiência com leitores de tela? Preciso de exemplos para um botão de navegação interna e um link externo."
+
+Resposta aceita: a IA explicou a diferença entre `accessibilityRole="button"` para navegação interna e `accessibilityRole="link"` para links externos, com exemplos aplicáveis diretamente à tela de perfil. As labels foram adaptadas para refletir o contexto do app (ex: `"Ver repositório no GitHub"`).
+
+**Prompt 6: Testes de acessibilidade e badges com Testing Library**
+> "Escreva testes com @testing-library/react-native para verificar: (1) que 4 badges estão sendo renderizados na tela de perfil usando getByText com os nomes dos ícones, e (2) que os botões têm accessibilityLabel correto usando getByLabelText."
+
+Resposta aceita com ajustes: os testes gerados precisaram ser adaptados para usar os mocks corretos do `RepContext` já existentes no projeto. A estrutura de `getByLabelText` foi mantida, mas os valores das labels foram corrigidos para corresponder exatamente ao que foi implementado na tela.
+
 ### O que não foi feito por IA
 
 - Definição do tema e conceito do app (Zelda/repúblicas estudantis)
