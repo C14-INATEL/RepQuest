@@ -169,11 +169,7 @@ export default function MissoesScreen() {
         />
 
         <Pressable 
-<<<<<<< HEAD
           style={({ hovered, pressed }) => [styles.fab, (hovered || pressed) && { transform: [{ scale: 1.01 }] }]}
-=======
-          style={({ hovered, pressed }: any) => [styles.fab, (hovered || pressed) && { transform: [{ scale: 1.1 }] }]}
->>>>>>> 25de68ba8993e7b8cbe8ca7cc2eb41c84fa84229
           onPress={() => setModalVisivel(true)}
         >
           <LinearGradient colors={[ZONAI_CYAN, '#004d4d']} style={styles.fabGradient}>

@@ -62,11 +62,6 @@ jest.mock('../constants/moradores', () => ({
 const createRepState = (overrides = {}) => ({
   totalRupes: 1250,
   loading: false,
-<<<<<<< HEAD
-=======
-  nomeUsuario: 'Eduardo Bertozzi',
-  avatarUsuario: 'user-astronaut',
->>>>>>> 25de68ba8993e7b8cbe8ca7cc2eb41c84fa84229
   ...overrides,
 });
 
