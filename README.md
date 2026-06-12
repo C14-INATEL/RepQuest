@@ -283,6 +283,19 @@ O GitHub funcionou como nosso quadro Kanban. Cada Pull Request representava uma 
 Em desenvolvimento (branch pessoal)  -->  Em revisao (PR aberto)  -->  Concluido (mergeado no main)
 ```
 
+A evolucao incremental do pipeline e a evidencia mais clara do Kanban em acao: cada job foi uma tarefa independente que passou exatamente por esses tres estados, entregue via PR individual sem bloquear o trabalho dos outros membros.
+
+| PR | Quem | Tarefa entregue |
+|---|---|---|
+| #16 | Gabriel | Job base `install-dependencies` + estrutura do CircleCI |
+| #17 | Gabriel | `eas.json` com perfis de build Android |
+| #19 | Samile | Job `security-audit` |
+| #20 | Guilherme | Job `lint` |
+| #26 | Rafael | Job `type-check` |
+| #30 | Daniele | Job `run-tests` |
+| #35 | Gabriel | Fix EACCES + TypeScript + audit level |
+| #37 | Gabriel | Job `eas-build-android` funcional com EXPO_TOKEN correto |
+
 ### Papeis e Responsabilidades
 
 Nao adotamos papeis formais (PO, Scrum Master, QA dedicado). A divisao emergiu organicamente conforme as habilidades e afinidades de cada membro:
@@ -303,6 +316,7 @@ As decisoes tecnicas centrais foram discutidas em grupo via WhatsApp. Exemplos:
 - **Context API vs Redux:** Redux foi descartado por exigir boilerplate desproporcional para a complexidade do estado do app. Context API nativa resolve sem dependencia extra. Decisao tomada pelo Eduardo na estrutura inicial do projeto.
 - **CircleCI vs GitHub Actions:** GitHub Actions foi descartado por ser proibido pelo enunciado. CircleCI foi escolhido por nao exigir servidor proprio e ter suporte nativo ao Expo. Decisao tomada pelo Gabriel ao configurar o pipeline.
 - **AsyncStorage vs SQLite:** os dados do app sao simples (numeros e arrays JSON). SQLite seria desproporcional para esse volume e estrutura. AsyncStorage resolve com uma API mais simples e sem configuracao nativa adicional.
+- **EAS Build com `--no-wait` vs aguardar o build:** o build Android leva 15-25 minutos. Aguardar no pipeline bloquearia todos os PRs do grupo durante esse tempo e consumiria o plano gratuito do CircleCI. A decisao foi usar `--no-wait` para disparar o build e retornar imediatamente, acompanhando o resultado no painel do expo.dev. O objetivo do job e provar que a configuracao esta correta (token, credenciais, eas.json) — nao compilar em tempo real a cada PR. Decisao tomada pelo Gabriel no PR #37.
 
 ### Ferramentas e Cadencia
 
@@ -321,6 +335,8 @@ Uma contribuicao era considerada pronta quando:
 
 Na pratica, o criterio de testes foi aplicado rigorosamente para commits de codigo. Commits de documentacao e CI foram revisados semanticamente, sem exigir execucao de testes.
 
+**Exemplo concreto:** o PR #35 foi aberto com 3 commits corrigindo erros de TypeScript e o nivel do security-audit. O PR so foi mergeado depois que o pipeline verde confirmou que todos os jobs passavam — nenhum membro aprovou manualmente sem essa evidencia automatica.
+
 ### Metricas do Projeto
 
 | Metrica | Valor |
@@ -331,7 +347,7 @@ Na pratica, o criterio de testes foi aplicado rigorosamente para commits de codi
 | Jobs de CI/CD | 6 (install, lint, type-check, security-audit, run-tests, eas-build) |
 | Cobertura de statements | 91% |
 | Historias de usuario | 8 (com Given/When/Then e rastreabilidade) |
-| Commits no main | 113+ |
+| Commits no main | 123+ |
 
 ---
 
@@ -351,12 +367,14 @@ Tivemos dois conflitos de merge significativos ao longo do projeto:
 
 A lição prática: atualizar a branch com o main (`git pull origin main`) antes de abrir qualquer PR teria evitado o segundo conflito.
 
+**Conflito 3 — Autenticação do EAS Build (PRs #35, #37):** o job `eas-build-android` falhava com "The bearer token is invalid" mesmo com o token correto configurado no CircleCI. A investigação durou 3 dias e incluiu trocar o token, verificar permissões da conta e testar diferentes formatos. A causa raiz foi inesperada: o bloco `environment: EXPO_TOKEN: $EXPO_TOKEN` no YAML do CircleCI passa o valor literal da string `$EXPO_TOKEN` ao processo, em vez do valor da variável configurada no painel. Removendo o bloco inteiro, o step herda a variável do projeto automaticamente. A lição: ler a documentação de escopo de variáveis de ambiente da ferramenta de CI antes de assumir que a sintaxe funciona como em bash.
+
 ### Lições aprendidas
 
-- **Documentar o estado global logo no início:** o `RepContext` era a peça central do app, mas a falta de documentação inicial gerou retrabalho para os membros que o consumiram depois.
-- **Criar o job de CI para testes antes de escrever os testes:** os testes existiam localmente por semanas antes de rodarem automaticamente no CI. Problemas de ambiente foram identificados com atraso.
-- **Padronizar commits desde o dia 1:** a mistura de estilos de mensagem (`feat:` vs mensagens livres) dificulta a leitura do histórico.
-- **Atualizar a branch com o main antes de abrir PR:** o conflito do `ranking.tsx` teria sido evitado com um `git pull` antes do PR.
+- **Documentar a API do estado global logo no início:** o `RepContext` era a peça central do app, mas a falta de documentação inicial gerou retrabalho. Cada membro teve que descobrir as funções (`ganharRupes`, `gastarRupes`, `setMissoesGlobal`) lendo o código — retrabalho que um README interno ou comentário JSDoc teria evitado. Evidencia: PR #22 precisou atualizar 4 telas de uma vez porque todas consumiam o contexto de formas inconsistentes.
+- **Criar o job de CI para testes antes de escrever os testes:** os testes existiam localmente por semanas antes de rodarem automaticamente no CI (job `run-tests` adicionado no PR #30). Problemas de ambiente (ESLint sem globais do Jest, TypeScript sem tipos do Jest) foram identificados com atraso — corrigidos nos PRs #34 e #35.
+- **Padronizar Conventional Commits desde o dia 1:** os primeiros commits do projeto usavam mensagens livres (`"Adicionando alteração na pasta tabs"`, `"Atualiza index.tsx"`). A partir do PR #16 o grupo adotou `feat:`, `fix:`, `ci:`, `docs:`, `test:`, `refactor:`. A diferenca na legibilidade do historico e visivel no `git log`.
+- **Atualizar a branch com o main antes de abrir PR:** o conflito do `ranking.tsx` (PR #31) teria sido evitado com um `git pull origin main` antes do PR. Depois desse incidente o grupo adotou isso como parte informal do processo antes de qualquer abertura de PR.
 
 ---
 
