@@ -185,6 +185,41 @@ Resposta aceita: a IA explicou a diferença entre `accessibilityRole="button"` p
 
 Resposta aceita com ajustes: os testes gerados precisaram ser adaptados para usar os mocks corretos do `RepContext` já existentes no projeto. A estrutura de `getByLabelText` foi mantida, mas os valores das labels foram corrigidos para corresponder exatamente ao que foi implementado na tela.
 
+## Daniele Letícia
+
+**Prompt 1: Entendendo a estrutura de uma pipeline CI/CD para projeto TypeScript**
+> "Me explique como funciona a construção de uma pipeline de CI/CD para um projeto TypeScript
+> com React Native. Quais são os jobs essenciais, em que ordem devem rodar e por que separar
+> etapas como instalação de dependências, lint, type-check e testes em jobs distintos?"
+
+Resposta aceita com ajustes: a IA explicou que separar os jobs permite identificar exatamente
+onde o pipeline falha — por exemplo, um erro de tipagem no type-check não impede que o
+resultado dos testes seja reportado separadamente. A estrutura sugerida (install → lint →
+type-check → run-tests → security-audit) foi aplicada no `.circleci/config.yml` do projeto,
+com adaptações para o ambiente Node.js usado pelo grupo. O conceito de jobs independentes
+ajudou a entender por que o run-tests podia passar enquanto o type-check falhava no mesmo PR.
+
+**Prompt 2: Mockar contextos React para isolar testes de tela**
+> "Tenho um contexto chamado RepContext com um hook useRep que retorna dados do usuário
+> como totalRupes, nomeUsuario e avatarUsuario. Como faço para mockar esse contexto nos
+> testes de uma tela específica sem precisar renderizar o Provider real?"
+
+Resposta aceita com ajustes: a IA sugeriu usar jest.mock para substituir o módulo inteiro do
+contexto e jest.fn() para controlar o retorno do hook em cada teste via mockReturnValue.
+A estrutura de mockUseRep como jest.fn() com um helper createRepState para montar o estado
+padrão foi adaptada do exemplo gerado, adicionando os campos específicos do projeto
+(nomeUsuario, avatarUsuario, loading) que o componente real consome.
+
+**Prompt 3: Erro de TypeScript no Pressable com propriedade hovered**
+> "O CircleCI está falhando no type-check com o erro TS2339: Property 'hovered' does not exist
+> on type 'PressableStateCallbackType' nos arquivos app/(tabs)/index.tsx e
+> app/onboarding/success.tsx. Como corrijo sem quebrar o comportamento de hover?"
+
+Resposta aceita: a IA explicou que `hovered` é uma prop do React Native Web e os tipos oficiais
+do React Native não a incluem. A solução aplicada foi adicionar `: any` na desestruturação do
+parâmetro `{ hovered, pressed }: any`, mantendo o comportamento visual e eliminando o erro
+de tipagem sem precisar alterar a lógica de estilo já existente.
+
 ### O que não foi feito por IA
 
 - Definição do tema e conceito do app (Zelda/repúblicas estudantis)
@@ -287,6 +322,24 @@ As jornadas de nossos heróis foram mapeadas através das seguintes narrativas e
 - **Then** (Então) o nome e o avatar são atualizados no contexto global e persistidos via AsyncStorage, refletindo imediatamente no ranking, no perfil e na gestão de membros.
 
 ---
+
+### 📜 Conto 9: O Aviso do Sábio (Notificações da República)
+
+**Prioridade:** Baixa | **Status:** Descartada
+
+**Rastreabilidade:** Item identificado durante o levantamento de requisitos e registrado como funcionalidade futura.
+
+**Como** morador da república, **quero** receber notificações quando uma nova missão for criada ou uma nova despesa for registrada **para** que eu acompanhe as atividades da casa mesmo quando o aplicativo não estiver aberto.
+
+- **Given** (Dado que) uma nova missão seja criada por um administrador.
+- **When** (Quando) a missão for disponibilizada aos moradores.
+- **Then** (Então) o sistema deve enviar uma notificação informando que uma nova atividade está disponível.
+
+- **Given** (Dado que) uma nova despesa compartilhada seja registrada.
+- **When** (Quando) a despesa for adicionada ao sistema.
+- **Then** (Então) os moradores devem receber uma notificação informando a atualização financeira da república.
+
+**Motivo do descarte:** Durante o planejamento da NP2, a equipe identificou que a implementação de notificações exigiria integração adicional com serviços específicos do Expo e tratamento de permissões dos dispositivos móveis. Considerando o tempo disponível e a prioridade das funcionalidades centrais (missões, despesas, ranking, perfil e onboarding), a funcionalidade foi registrada como melhoria futura e removida do escopo desta versão.
 
 ## 🗂️ Metodologia de Desenvolvimento
 
