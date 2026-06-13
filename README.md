@@ -411,13 +411,13 @@ Na pratica, o criterio de testes foi aplicado rigorosamente para commits de codi
 
 | Metrica | Valor |
 |---|---|
-| Pull Requests mergeados | 39 |
+| Pull Requests mergeados | 45 |
 | Branches ativas | 6 (uma por integrante) |
 | Testes unitarios | 83 (10 suites) |
 | Jobs de CI/CD | 6 (install, lint, type-check, security-audit, run-tests, eas-build) |
 | Cobertura de statements | 91% |
-| Historias de usuario | 8 (com Given/When/Then e rastreabilidade) |
-| Commits no main | 123+ |
+| Historias de usuario | 9 (8 implementadas + 1 descartada com justificativa) |
+| Commits no main | 143+ |
 
 ---
 
