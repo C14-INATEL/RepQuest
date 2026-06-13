@@ -31,6 +31,7 @@ export default function OnboardingSubFlow() {
   const [nomeRep, setNomeRep] = useState('');
   const [inviteCode, setInviteCode] = useState('');
   const [nameError, setNameError] = useState(false);
+  const [codeError, setCodeError] = useState(false);
   
   useEffect(() => {
     if (mode === 'join') setStep('join');
@@ -67,7 +68,7 @@ export default function OnboardingSubFlow() {
       return;
     }
     if (step === 'join' && inviteCode.trim().length < 4) {
-      Alert.alert('Código inválido', 'Insira o código de convite completo para sincronizar.');
+      setCodeError(true);
       return;
     }
 
@@ -165,14 +166,25 @@ export default function OnboardingSubFlow() {
               <View style={styles.inputBox}>
                 <Text style={styles.inputLabel}>CÓDIGO DE CONVITE</Text>
                 <TextInput
-                  style={[styles.input, { color: RUPEE_GOLD, fontSize: 24, textAlign: 'center' }]}
+                  style={[styles.input, { color: RUPEE_GOLD, fontSize: 24, textAlign: 'center' },
+                    codeError && styles.inputError
+
+                  ]}
                   placeholder="SAB-0000"
                   placeholderTextColor="rgba(252, 172, 3, 0.2)"
                   value={inviteCode}
-                  onChangeText={setInviteCode}
+                  onChangeText={(text) => {
+                    setInviteCode(text);
+                    setCodeError(false);  // ← limpa o erro ao digitar
+                    }}             
                   maxLength={8}
                   autoCapitalize="characters"
                 />
+                {codeError && (
+                  <Text style={styles.errorText}>
+                    ⚠ Insira o código de convite completo
+                  </Text>
+                )}
               </View>
             )}
 
